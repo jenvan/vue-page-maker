@@ -1,5 +1,5 @@
 {
-    "name": "demo",
+    "name": "vue-page-maker",
     "version": "1.9.1",
     "private": true,
     "license": "Apache-2.0",
@@ -12,8 +12,12 @@
         "@lljj/polyfill": "^0.1.0",
         "@lljj/vue-json-schema-form": "1.9.1",
         "animate.css": "^4.1.1",
+        "axios": "^0.24.0",
+        "element-ui": "^2.15.6",
         "postcss-preset-env": "^6.7.0",
+        "qs": "^6.10.2",
         "vue": "^2.6.10",
+        "vue-router": "^3.5.3",
         "vuedraggable": "2.23.2"
     },
     "devDependencies": {

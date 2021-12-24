@@ -33,6 +33,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 // config var
 const outputDir = path.resolve(__dirname, './dist');
 
+console.log(entries, openPage);
+
 module.exports = {
     // cdn
     publicPath: isProduction ? '/' : '/',
@@ -55,16 +57,10 @@ module.exports = {
     productionSourceMap: false,
 
     configureWebpack: (config) => {
-        config.externals = {
-            vue: 'Vue',
-            ELEMENT: 'ELEMENT',
-            VueRouter: 'VueRouter',
-        };
+
         config.resolve.alias = {
             ...config.resolve.alias,
             'demo-common': path.resolve(__dirname, './src/demo-common'),
-            // '@lljj/vue-json-schema-form': '@lljj/vue-json-schema-form/src/index',
-            // '@lljj/vue2-form-iview3': '@lljj/vue2-form-iview3/src/index',
         };
     },
 

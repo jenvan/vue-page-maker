@@ -1,6 +1,6 @@
 @import './variable.css';
 
-body {    
+body {
     background: #FFFFFF;
     box-sizing: border-box;
     color: var(--normalC);

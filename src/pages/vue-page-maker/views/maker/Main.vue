@@ -9,21 +9,22 @@
             <EditorHeader
                 v-if="!isPreview"
                 v-model="scale"
-                :is-mobile="isMobile"
+                :is-mobile="fakeMobile"
                 @onMenu="handleMenu"
-                @onUpdateDevice="(v) => {pageConfig.device = v}"
                 @onPreview="(scale = 100) && (isPreview = true)"
+                @onUpdateDevice="(v) => {this.fakeMobile = v}"
                 @onImport="handleImport"
                 @onExport="handleExport"
                 @onPublish="handlePublish"
             ></EditorHeader>
             <el-button
                 v-if="isPreview && action != ''"
-                type="primary"
-                style="position: fixed;right: 20px;top: 20px;z-index: 10;"
+                type="success"
+                size="min"
+                style="position: fixed; top: 20%; right: 0px; z-index: 999999; padding: 10px;"
                 @click="isPreview = false"
             >
-                结束预览
+                结<br>束<br>预<br>览
             </el-button>
         </transition>
 
@@ -83,6 +84,7 @@
                                 :ui-schema="editComp.componentPack.uiSchema"
                                 :error-schema="editComp.componentPack.errorSchema"
                                 :custom-rule="editComp.componentPack.customRule"
+                                :form-props="editComp.componentPack.formProps"
                                 :form-footer="{okBtn: '设置', cancelBtn: '关闭'}"
                                 @on-change="handleFormChange"
                                 @on-cancel="handleFormCanel"
@@ -112,10 +114,9 @@
                 </el-tabs>
             </div>
 
-            <div :class="$style.contentWrap">
-                <div
-                    id="page"
-                    :class="$style.content"
+            <div :class="$style.deviceWrap">
+                <div id="device"
+                    :class="$style.device"
                     :style="{
                         width: deviceWidth,
                         height: deviceHeight,
@@ -123,11 +124,12 @@
                     }"
                 >
 
-                    <div :class="$style.contentHead" :style="{height: pageConfig['hheight'] + 'px', ...pageConfig['hstyle']}">
+                    <div :class="$style.contentHead" :style="{height: pageConfig['hheight'] + 'em', ...pageConfig['hstyle']}">
                         <div :class="[$style.contentHeadArc, $style[pageConfig['heffect']]]"></div>
                     </div>
 
-                    <div :class="$style.contentBody" :style="{
+                    <div id="page"
+                        :class="$style.contentBody" :style="{
                         width: pageConfig['width'],
                         maxWidth: (pageConfig['mwidth'] || '1180px'),
                         minHeight: '100%',
@@ -236,6 +238,10 @@ export default {
             showTool: true,
             showForm: true,
 
+            fakeMobile: true,
+            deviceWidth: "100vw",
+            deviceHeight: "100vh",
+
             toolList,
 
             editComponentList: [],
@@ -249,6 +255,17 @@ export default {
 
             tabName: 'pageTab',
         };
+    },
+
+    created() {
+        window.addEventListener("resize", this.handleResize, true);
+        this.loadEditorData(this.action, this.id);
+    },
+    mounted() {
+        window.document.body.classList.add('page-decorate-design');
+    },
+    destroyed() {
+        window.document.body.classList.remove('page-decorate-design');
     },
 
     computed: {
@@ -278,16 +295,6 @@ export default {
                     this.pageConfigDefault = Object.create(value);
                 }
             }
-        },
-
-        isMobile() {
-            return typeof this.pageConfig.device !== 'boolean' || this.pageConfig.device;
-        },
-        deviceWidth() {
-            return this.isMobile ? '375px' : '100vw';
-        },
-        deviceHeight() {
-            return this.isMobile ? '812px' : (this.isPreview ? '100vh' : `calc(${100 / this.scale} * (100vh - 90px))`);
         },
 
         dragOptions() {
@@ -326,18 +333,21 @@ export default {
         }
     },
     watch: {
+        scale: {
+            handler (val) {
+                this.handleResize();
+            },
+            immediate: true
+        },
+        fakeMobile: {
+            handler (val) {
+                this.handleResize();
+            },
+            immediate: true
+        },
         trueComponentList() {
             this.computedComponentToolBarStatus();
         }
-    },
-    created() {
-        this.loadEditorData(this.action, this.id);
-    },
-    mounted() {
-        window.document.body.classList.add('page-decorate-design');
-    },
-    destroyed() {
-        window.document.body.classList.remove('page-decorate-design');
     },
     methods: {
         async loadEditorData(action = "", id = "") {
@@ -352,6 +362,8 @@ export default {
                 });
                 if (action == "" || action == "view") {
                     this.isPreview = true;
+                    this.fakeMobile = false;
+                    this.scale = 100;
                 }
             }
             else {
@@ -445,6 +457,40 @@ export default {
         },
 
 
+
+        // 窗口调整
+        handleResize(){
+            let inMobile = document.documentElement.clientWidth < 1024;
+            if (this.isPreview)
+                this.deviceWidth = (inMobile || !this.fakeMobile) ? '100vw' : '375px';
+            else 
+                this.deviceWidth = this.fakeMobile ? '375px' : '100vw';
+            if (this.isPreview)
+                this.deviceHeight = (inMobile || !this.fakeMobile) ? '100vh' : '812px';
+            else
+                this.deviceHeight = this.fakeMobile ? '812px' : `calc(${100 / this.scale} * (100vh - 90px))`;
+
+            console.log("Preview:", this.isPreview, "inMobile:", inMobile, "FakeMobile:", this.fakeMobile, "DeviceWidth:", this.deviceWidth);
+
+            setTimeout(() => {
+                let o = document.querySelector("#device")
+                let w = o.clientWidth;
+                console.log("clientWidth >>>", w);
+                if (w <= 480){
+                    o.style.fontSize = 100 / 2 + "%";
+                    //o.style.backgroundColor = "blue";
+                }
+                else if (w < 1024){
+                    o.style.fontSize = 100 / 1.5 + "%";
+                    //o.style.backgroundColor = "green";
+                }
+                else {
+                    o.style.fontSize = "100%";
+                    //o.style.backgroundColor = "#FFF";
+                }
+            }, 300);
+        },
+
         // EditorHeader 动作
         handleMenu(command) {
             if (command == "new") {
@@ -456,7 +502,7 @@ export default {
                         VueComponent: PageList,
                         dialogProps: {
                             title: '页面列表',
-                            width: '80vw',
+                            width: '90vw',
                             top: '5vh',
                         },
                         componentProps: {
@@ -483,7 +529,7 @@ export default {
                         VueComponent: MediaList,
                         dialogProps: {
                             title: '素材列表',
-                            width: '80vw',
+                            width: '90vw',
                             top: '5vh',
                         },
                         componentProps: {
@@ -533,7 +579,7 @@ export default {
             console.log(this.compConfig, this.pageConfig);
             let data = {page: this.pageConfig, component: this.compConfig};
             this.$http.post("/set?id=" + this.id + "&name=config", {content: JSON.stringify(data)}).then((data) => {
-                this.$message({type:"success", message:"保存成功"});
+                this.$message({type:"success", message:"发布成功", duration: 2000});
                 this.action != "edit" && this.$router.push("edit?id=" + data.id);
             });
         },
@@ -553,7 +599,7 @@ export default {
                 copy(target, arrayItem) {
                     // 不copy数据可以使用  emptyPack 代替 arrayItem
                     // const { componentValue, ...emptyPack } = arrayItem;
-                    return target.splice(target.indexOf(arrayItem) + 1, 0, generateEditorItem(arrayItem));
+                    return target.splice(target.indexOf(arrayItem) + 1, 0, {...generateEditorItem(arrayItem)});
                 },
                 remove(target, arrayItem) {
                     this.handleFormCanel();
@@ -588,9 +634,7 @@ export default {
         },
 
         handlePageChange() {
-            if (this.pageConfigDefault.device != this.pageConfigDynamic.device) {
-                this.scale = this.pageConfigDynamic.device ? 100 : 50;
-            }
+
         },
         handlePageReset() {
             this.pageConfig = Object.create(this.pageConfigDefault);
@@ -649,7 +693,7 @@ export default {
         .container {
             height: 100vh;
         }
-        .content {
+        .device {
             box-shadow: none;
             cursor: auto;
         }
@@ -794,8 +838,8 @@ export default {
         }
     }
 
-    /* Content area */
-    .contentWrap {
+    /* Device area */
+    .deviceWrap {
         position: relative;
         width: 100vw;
         height: 100%;
@@ -803,9 +847,9 @@ export default {
         align-items: center;
         justify-content: center;
     }
-    .content {
+    .device {
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         box-shadow: 0 0 10px 1px rgba(0,0,0,0.3);
         text-align: center;
         &::-webkit-scrollbar {
@@ -821,7 +865,7 @@ export default {
         }
     }
     .contentHead {
-        position: relative;
+        position: absolute;
         z-index: 0;
         top: 0;
         width: 100%;
@@ -874,10 +918,10 @@ export default {
         }
     }
     .contentBody {
-        position: absolute;
+        position: static;
         z-index: 6;
-        top: 0;
         margin-left: 50%;
+        min-height: 100%;
         transform: translate(-50%, 0);
     }
 

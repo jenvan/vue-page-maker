@@ -1,11 +1,11 @@
 <template>
     <div :class="$style.box">
-        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :height="formData.height + 'px'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
+        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :height="formData.height + 'em'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
             <el-carousel-item v-for="(item,index) in formData.list" :key="index" :label="getLabel(item.label)">
-                <ImageView :data="item.image" :lazy="false"></ImageView>
+                <ImageView :data="item.image" :lazy="false" fit="fill"></ImageView>
             </el-carousel-item>
         </el-carousel>
-        <div :class="[$style.text, formData.isCard ? $style.card : '']" v-show="show">
+        <div :class="[$style.text, formData.isCard ? $style.card : '']" v-show="showText">
             <TextView :data="text"></TextView>
         </div>
     </div>
@@ -25,9 +25,9 @@ export default {
         };
     },
     computed: {
-        show() {
+        showText() {
             return this.text && this.text.text && this.text.text.length > 0;
-        }
+        },
     },
     methods: {
         getLabel(label) {

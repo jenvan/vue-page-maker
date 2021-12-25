@@ -1,5 +1,5 @@
 <template>
-    <el-image :src="image" :style="style" :class="className" fit="contain" scroll-container="#page" :lazy="lazy" @click="handleClick" @load="handleLoad">
+    <el-image :src="image" :style="style" :class="className" :fit="fit" :lazy="lazy" scroll-container="#page" @click="handleClick" @load="handleLoad">
         <i slot="error" class="el-icon-picture-outline"></i>
     </el-image>
 </template>
@@ -15,6 +15,10 @@ export default {
         animate: {
             type: Object,
             default: () => ({})
+        },
+        fit: {
+            type: String,
+            default: "contain"
         },
         lazy: {
             type: Boolean,

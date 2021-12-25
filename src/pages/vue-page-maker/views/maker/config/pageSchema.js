@@ -32,9 +32,9 @@ export default {
                 default: '1190px'
             },
             hheight: {
-                title: '页头高度',
+                title: '页头高度（rem）',
                 type: 'number',
-                default: '200',
+                default: '5',
             },
             heffect: {
                 title: '页头效果',

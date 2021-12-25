@@ -24,8 +24,8 @@ export default {
         size() {
             let s = this.data.size || 0;
             if (!this.data.direction || /column/.test(this.data.direction))
-                return [{width: "100%", height: s + "px"}, {width: "100%"}];
-            return [{width: s + "px"}, {width: "calc(100% - " + s + "px"}];
+                return [{width: "100%", height: s + "em"}, {width: "100%"}];
+            return [{width: s + "em"}, {width: "calc(100% - " + s + "em"}];
         },
         hasImage() {
             return this.data.image && this.data.image.image && this.data.image.image.length > 0;

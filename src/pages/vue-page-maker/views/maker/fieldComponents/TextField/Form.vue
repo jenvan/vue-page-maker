@@ -11,6 +11,7 @@
             <el-color-picker :class="$style.picker" v-model="color" size="mini" title="字体颜色"></el-color-picker>
             <el-input-number :class="$style.number" v-model="fontSize" :min="1" :max="128" controls-position="right" size="mini" title="字体大小"></el-input-number>
         </div>
+        <el-input v-show="hasLink" v-model="link" :class="$style.link" suffix-icon="el-icon-link" clearable placeholder="请输入文字链接" title="文字链接"></el-input>
 
     </el-form-item>
 </template>
@@ -26,13 +27,16 @@ export default {
     computed: {
         fontSize: {
             get() {
-                return parseInt(this.get("fontSize"));
+                return parseInt(this.get("fontSize").replace("em", "") * 16);
             },
             set(value) {
-                return this.set("fontSize", value + "px");
+                return this.set("fontSize", value / 16 + "em");
             }
         },
-        ...importComputedFn(['text', 'color']),
+        hasLink() {
+            return !this.getProp('hidden', 'link');
+        },
+        ...importComputedFn(['text', 'color', 'link']),
     },
     methods: {
         ...importMethodsFn(),
@@ -42,7 +46,7 @@ export default {
 
 <style module>
 .row {
-    position: static;
+    position: relative;
     width: 100%;
 }
 .picker, .number {
@@ -69,5 +73,9 @@ export default {
             right: auto !important;
         }
     }
+}
+.link {
+    width: 100%;
+    margin-top: 2px;
 }
 </style>

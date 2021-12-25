@@ -4,7 +4,7 @@
     <div :class="[$style.header, $style.toolbar]">
       <el-input placeholder="请填写网络图片地址" v-model="url" clearable></el-input>
       &nbsp;
-      <el-button type="primary" plain @click="handleAdd">添加网络图片</el-button>
+      <el-button type="primary" plain @click="handleAdd">添加</el-button>
       &nbsp;
       <el-upload name="file" action="https://jsonplaceholder.typicode.com/posts/" accept="image/png, image/jpeg, image/gif" :show-file-list="false" :headers="headers" :on-change="handleUpload">  
         <el-button type="primary" plain>上传本地图片</el-button>
@@ -48,7 +48,11 @@
   width: 100%;
   margin-bottom: 10px;
   &.footer {
+    flex-flow: row wrap;
     justify-content: flex-end;
+  }
+  :global .el-select input {
+    width: 200px;
   }
 }
 .tags {

@@ -16,7 +16,7 @@
                     <el-select :class="$style.layout" v-model="direction" title="图文布局">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
-                    <el-input-number :class="$style.size" v-model="size" :min="0" :max="1180" controls-position="right" :title="sizeTitle"></el-input-number>
+                    <el-input-number :class="$style.size" v-model="size" :min="0" :max="120" controls-position="right" :title="sizeTitle"></el-input-number>
                 </div>
                 <VueElementForm v-model="animate" :schema="animateSchema" :form-footer="{show: false}"></VueElementForm>
                 <VueElementForm v-model="style" :schema="styleSchema" :form-footer="{show: false}"></VueElementForm>

@@ -65,6 +65,7 @@ export function makeTextItem({
     placeholder = '请输入文字内容',
     content = '',
     color = '',
+    hasLink = false,
     required = []
 } = { }) {
     return {
@@ -85,7 +86,12 @@ export function makeTextItem({
             },
             fontSize: {
                 type: 'string',
-                default: '14px'
+                default: '1em'
+            },
+            link: {
+                type: 'string',
+                default: '',
+                'ui:hidden': !hasLink,
             },
         },
         required: `${required}`
@@ -94,6 +100,7 @@ export function makeTextItem({
 
 export function makeImageItem({
     title = '图片',
+    placeholder = '请选择或输入图片地址',
     isBackground = false,
     required = []
 } = { }) {
@@ -106,10 +113,8 @@ export function makeImageItem({
                 type: 'string',
                 default: '',
                 'ui:options': {
-                    placeholder: '请选择或输入图片地址'
-                },
-                'err:format': '图片地址不正确',
-                'err:required': '请输入图片地址'
+                    placeholder
+                }
             },
             link: {
                 type: 'string',

@@ -30,9 +30,18 @@ import componentPackGoodsRecommend from '../viewComponents/GoodsRecommend';
 // 秒杀
 import componentPackGoodsFlashSale from '../viewComponents/GoodsFlashSale';
 
-
 // 优惠券
 import componentPackCoupon from '../viewComponents/Coupon';
+
+
+// 顶部导航
+import componentPackNavTop from '../viewComponents/NavTop';
+
+// 底部导航
+import componentPackNavTab from '../viewComponents/NavTab';
+
+// 宫格导航
+import componentPackNavGrid from '../viewComponents/NavGrid';
 
 
 /**
@@ -101,32 +110,9 @@ const tools = [
             componentPack: componentPackGoodsFlashSale
         }, {
             title: '分类推荐',
-            maxNum: 1,
+            maxNum: 5,
             icon: 'el-icon-s-grid',
             componentPack: componentPackGoodsCategory
-        }]
-    },
-    {
-        groupName: '导航类',
-        componentList: [{
-            title: '顶部导航',
-            maxNum: 1,
-            icon: 'el-icon-s-goods',
-            componentPack: componentPackCoupon,
-            additional: {
-                topDisplay: true,
-                unRemove: true
-            }
-        }, {
-            title: '分类菜单',
-            maxNum: 1,
-            icon: 'el-icon-s-goods',
-            componentPack: componentPackCoupon
-        }, {
-            title: '浮动导航',
-            maxNum: 1,
-            icon: 'el-icon-s-goods',
-            componentPack: componentPackCoupon
         }]
     },
     {
@@ -136,6 +122,39 @@ const tools = [
             maxNum: 1,
             icon: 'el-icon-s-ticket',
             componentPack: componentPackCoupon
+        }]
+    },
+    {
+        groupName: '导航类',
+        componentList: [{
+            title: '顶部导航',
+            maxNum: 1,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackNavTop,
+            additional: {
+                topDisplay: true,
+            }
+        },{
+            title: '底部导航',
+            maxNum: 1,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackNavTab,
+            additional: {
+                bottomDisplay: true,
+            }
+        }, {
+            title: '宫格导航',
+            maxNum: 1,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackNavGrid
+        }, {
+            title: '浮动导航',
+            maxNum: 3,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackCoupon,
+            additional: {
+                unRemove: true
+            }
         }]
     }
 ];

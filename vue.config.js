@@ -131,7 +131,7 @@ module.exports = {
         open: true,
         openPage,
         port: 8800,
-        host: '127.0.0.1',
+        host: '192.168.1.2',
         overlay: {
             warnings: false,
             errors: true

@@ -7,7 +7,9 @@
                 active-value="pc"
                 inactive-text="手机"
                 inactive-value="mobile"
-                style="margin-right:10px; width:120px;">
+                style="margin-right:10px; width:120px;"
+                @change="emitUpdateScale(device == 'mobile' ? 50 : 100)"
+                >
             </el-switch>
             <el-button
                 icon="el-icon-minus"
@@ -19,7 +21,7 @@
             <el-button
                 type="text"
                 style="width:36px;text-align:center;"
-                @click="emitUpdateScale(device == 'mobile' ? 100 : 50)"
+                @click="emitUpdateScale(100)"
             >
                 {{ value }}%
             </el-button>

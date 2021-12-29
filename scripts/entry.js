@@ -17,15 +17,18 @@ function entryFn({ dir, chunks = [] }) {
     // entry 文件
     const filePath = path.normalize(path.resolve(__dirname, '../src/pages/*/index.js'));
 
-    let openPage = null;
+    let openPage = "";
     const entries = glob.sync(filePath).reduce((preValue, entry, index) => {
-        const dirName = path.normalize(path.dirname(entry));
-        const entryName = dirName.substring(path.normalize(dirPath).length + 1).replace(/\\/g, '/');
+        let dirName = path.normalize(path.dirname(entry));
+        let entryName = dirName.substring(path.normalize(dirPath).length + 1).replace(/\\/g, '/');
 
         // const fileName = path.basename(entry, path.extname(entry));
 
         // 第一个 entry 为浏览器默认打开页面
-        if (index === 0) openPage = `${entryName}.html`;
+        if (index === 0){
+            entryName = "index";
+            //openPage = `${entryName}.html`;
+        } 
 
         preValue[entryName] = {
             entry,

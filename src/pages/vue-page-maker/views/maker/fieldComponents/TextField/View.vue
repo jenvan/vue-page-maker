@@ -1,5 +1,5 @@
 <template>
-    <span :class="{[$style.text]: true, [$style.link]: hasLink}" :style="style" @click="handleClick">{{text}}</span>
+    <div :class="{[$style.text]: true, [$style.link]: hasLink}" :style="style" @click="handleClick" v-html="text"></div>
 </template>
 
 <script>
@@ -13,23 +13,28 @@ export default {
     },
     computed: {
         text() {
-            const {text, ...style} = this.data;
-            return text;
+            const {text} = this.data;
+            let html = text && text.length > 0 ? text : "";
+            html = html.replace(/&/g, "&amp;");
+            html = html.replace(/\</g, "&lt;");
+            html = html.replace(/\>/g, "&gt;");
+            html = html.replace(/\"/g, "&quot;");
+            html = html.replace(/\'/g, "&apos;");
+            html = html.replace(/\r\n/g, "<br>").replace(/\n/g, "<br>").replace(/\s/g, "&nbsp;&nbsp;");
+            return html;
         },
         style() {
-            const {text, ...style} = this.data;
+            const {text, link, ...style} = this.data;
             return style;
         },
         hasLink() {
-            return this.data.link && this.data.link.length > 0;
+            return typeof this.data.link == "string" && this.data.link.length > 0;
         },
     },
     methods: {
         handleClick() {
             if (!this.hasLink) return;
-            if (this.data.link.substring(0, 4) == "http")
-                return window.open(this.data.link, "_blank");
-            return this.$router.push(this.data.link);
+            this.$redirect(this.data.link);
         },
     }
 };

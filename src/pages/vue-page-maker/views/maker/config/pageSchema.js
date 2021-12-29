@@ -5,14 +5,10 @@ export default {
         type: 'object',
         required: [],
         properties: {
-            device: {
-                title: '适配设备',
+            fitMobile: {
+                title: '优先适配手机',
                 type: 'boolean',
                 default: true,
-                'ui:options': {
-                    activeText: '手机',
-                    inactiveText: '电脑'
-                },
                 'ui:hidden': true
             },
 
@@ -24,7 +20,7 @@ export default {
             width: {
                 title: '页面宽度',
                 type: 'string',
-                default: '97%'
+                default: '98%'
             },
             mwidth: {
                 title: '页面最大宽度',
@@ -32,9 +28,13 @@ export default {
                 default: '1190px'
             },
             hheight: {
-                title: '页头高度（rem）',
-                type: 'number',
-                default: '5',
+                title: '页头高度（px）',
+                type: "number",
+                default: 200,
+                "ui:widget": "ElSlider",
+                multipleOf: 1,
+                minimum: 100,
+                maximum: 600
             },
             heffect: {
                 title: '页头效果',
@@ -54,7 +54,7 @@ export default {
             },
             hstyle: {
                 ...makeImageItem({title: "页头背景", isBackground: true}),
-                ...{properties: {backgroundColor: {default: '#900'}}},
+                ...{properties: {backgroundColor: {default: ''}}},
             },
 
             gstyle: {

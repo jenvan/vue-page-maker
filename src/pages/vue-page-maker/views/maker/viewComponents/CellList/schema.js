@@ -35,7 +35,7 @@ export default {
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 0,
-            maximum: 20
+            maximum: 50
         },
         list: {
             title: "",

@@ -1,6 +1,6 @@
 <template>
     <el-row :class="[$style.box]" type="flex">
-        <el-col v-for="(item,index) in formData.list" :key="index" :span="formData.column"  :style="{padding:formData.gutter + 'px'}">
+        <el-col v-for="(item,index) in formData.list" :key="index" :span="formData.column"  :style="{padding:formData.gutter / 16 + 'em'}">
             <CellView :data="item"></CellView>
         </el-col>
     </el-row>

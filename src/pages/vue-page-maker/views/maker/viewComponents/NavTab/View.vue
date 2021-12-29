@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import {debounce, throttle} from '../../common/utils/noRepeat';
 export default {
     props: {
         formData: {
@@ -25,7 +26,7 @@ export default {
     },
     mounted() {
         setInterval(this.handleScroll, 300);
-        document.querySelector("#device").addEventListener("scroll", this.handleScroll);
+        document.querySelector("#device").addEventListener("scroll", debounce(this.handleScroll, 300));
     },
     methods: {
         handleScroll() {

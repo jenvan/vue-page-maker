@@ -49,25 +49,25 @@ export default {
         "height": {
             "title": "导航高度",
             "type": "number",
-            "default": 10,
+            "default": 40,
             "ui:widget": "ElSlider",
             'ui:labelWidth': '100px',
             "multipleOf": 1,
-            "minimum": 5,
-            "maximum": 20
+            "minimum": 40,
+            "maximum": 200
         },
         "bgcolor": {
             "title": "背景颜色",
             "type": "string",
             "format": "color",
-            "default": "#000",
+            "default": "",
             'ui:labelWidth': '100px',
         },
         "fgcolor": {
             "title": "文字颜色",
             "type": "string",
             "format": "color",
-            "default": "#409EFF",
+            "default": "#000",
             'ui:labelWidth': '100px',
         },
         "logo": {

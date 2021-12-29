@@ -2,6 +2,7 @@
     <div
         v-loading="loading"
         :class="{
+            editMode: !isPreview,
             [$style.previewBox]: isPreview
         }"
     >
@@ -124,7 +125,7 @@
                     }"
                 >
 
-                    <div :class="$style.contentHead" :style="{height: pageConfig['hheight'] + 'em', ...pageConfig['hstyle']}">
+                    <div :class="$style.contentHead" :style="{height: pageConfig['hheight'] / 16 + 'em', ...pageConfig['hstyle']}">
                         <div :class="[$style.contentHeadArc, $style[pageConfig['heffect']]]"></div>
                     </div>
 
@@ -167,7 +168,7 @@
                             </div>
                         </draggable>
                         <div
-                            v-if="trueComponentList.length === 0"
+                            v-if="trueComponentList.length === 0 && !isPreview"
                             :class="$style.tipBox"
                         >
                             <div :class="$style.icon"><i class="el-icon-thumb"></i></div>
@@ -187,6 +188,7 @@ import Draggable from 'vuedraggable';
 import VueElementForm from '@lljj/vue-json-schema-form';
 
 import * as arrayMethods from './common/utils/array';
+import {debounce, throttle} from './common/utils/noRepeat';
 import componentWithDialog from './common/componentWithDialog';
 import { vm2Api, api2VmToolItem } from './common/dataConvert';
 import { getComponentsAndInitToolsConfig, generateEditorItem } from './common/editorData';
@@ -231,14 +233,13 @@ export default {
     },
     data() {
         return {
-            loading: false,
-            isPreview: false,
+            loading: true,
+            isPreview: true,
             scale: 100,
 
             showTool: true,
             showForm: true,
 
-            fakeMobile: true,
             deviceWidth: "100vw",
             deviceHeight: "100vh",
 
@@ -251,7 +252,7 @@ export default {
 
             pageSchema,
             pageConfigDefault: null, // 原始值
-            pageConfigDynamic: {}, // 设置值
+            pageConfigDynamic: {},   // 设置值
 
             tabName: 'pageTab',
         };
@@ -259,6 +260,7 @@ export default {
 
     created() {
         window.addEventListener("resize", this.handleResize, true);
+        window.addEventListener("scroll", debounce(this.handleScroll, 300), true);
         this.loadEditorData(this.action, this.id);
     },
     mounted() {
@@ -294,6 +296,15 @@ export default {
                 if (this.pageConfigDefault == null) {
                     this.pageConfigDefault = Object.create(value);
                 }
+            }
+        },
+
+        fakeMobile: {
+            get() {
+                return typeof this.pageConfig.fitMobile !== 'boolean' || this.pageConfig.fitMobile;
+            },
+            set(v) {
+                this.pageConfig.fitMobile = v;
             }
         },
 
@@ -333,6 +344,12 @@ export default {
         }
     },
     watch: {
+        isPreview: {
+            handler (val) {
+                this.handleResize();
+            },
+            immediate: true
+        },
         scale: {
             handler (val) {
                 this.handleResize();
@@ -354,22 +371,33 @@ export default {
             if (action != this.action || id != this.id) {
                 await this.$router.push(action + (id.length > 0 ? "?id=" + id : ""));
             }
+
             if (id && id.length > 16){
-                this.$http.post("/get?id=" + id + "&name=config").then((data) => {
+                return this.$http.post("/get?id=" + id + "&name=config").then((data) => {
                     const {page, component} = data;
                     this.pageConfig = page;
                     this.compConfig = component;
+                    document.title = this.pageConfig["title"];
+                    if (action == "" || action == "view") {
+                        this.isPreview = true;
+                        this.scale = 100;
+                    }
+                    else {
+                        this.isPreview = false;
+                        this.scale = this.fakeMobile ? 100 : 50;
+                    }
+                    this.loading = false;
+                }).catch(() => {
+                    this.isPreview = false;
+                    this.loading = false;
                 });
-                if (action == "" || action == "view") {
-                    this.isPreview = true;
-                    this.fakeMobile = false;
-                    this.scale = 100;
-                }
             }
-            else {
-                this.pageConfig = {};
-                this.compConfig = compSchema;
-            }
+            
+            document.title = "页面编辑器 - VUE PAGE MAKER";
+            this.pageConfig = {};
+            this.compConfig = compSchema;
+            this.isPreview = false;
+            this.loading = false;
         },
         initEditorData(data) {
             const dataList = api2VmToolItem(toolList, data);
@@ -460,35 +488,57 @@ export default {
 
         // 窗口调整
         handleResize(){
-            let inMobile = document.documentElement.clientWidth < 1024;
-            if (this.isPreview)
-                this.deviceWidth = (inMobile || !this.fakeMobile) ? '100vw' : '375px';
-            else 
-                this.deviceWidth = this.fakeMobile ? '375px' : '100vw';
-            if (this.isPreview)
-                this.deviceHeight = (inMobile || !this.fakeMobile) ? '100vh' : '812px';
-            else
-                this.deviceHeight = this.fakeMobile ? '812px' : `calc(${100 / this.scale} * (100vh - 90px))`;
 
-            console.log("Preview:", this.isPreview, "inMobile:", inMobile, "FakeMobile:", this.fakeMobile, "DeviceWidth:", this.deviceWidth);
+            let [w, h] = ['375px', '667px'];
+            //let [w, h] = ['414px', '736px'];
+            if (this.isPreview) {
+                let inMobile = document.documentElement.clientWidth < 1024;
+                this.deviceWidth  = (this.fakeMobile && !inMobile) ? w : '100vw';
+                this.deviceHeight = (this.fakeMobile && !inMobile) ? h : '100vh';
+            }
+            else {
+                this.deviceWidth  = this.fakeMobile ? w : '100vw';
+                this.deviceHeight = this.fakeMobile ? h : `calc(${100 / this.scale} * (100vh - 90px))`;
+            }
 
             setTimeout(() => {
-                let o = document.querySelector("#device")
+                let o = document.querySelector("#device");
                 let w = o.clientWidth;
-                console.log("clientWidth >>>", w);
-                if (w <= 480){
-                    o.style.fontSize = 100 / 2 + "%";
-                    //o.style.backgroundColor = "blue";
+                if (w <= 375){
+                    o.style.fontSize = 100 / 1.75 + "%";
                 }
-                else if (w < 1024){
-                    o.style.fontSize = 100 / 1.5 + "%";
-                    //o.style.backgroundColor = "green";
+                else if (w <= 480){
+                    o.style.fontSize = 100 / 1.65 + "%";
+                }
+                else if (w <= 1024){
+                    o.style.fontSize = 100 / 1.4 + "%";
                 }
                 else {
                     o.style.fontSize = "100%";
-                    //o.style.backgroundColor = "#FFF";
                 }
             }, 300);
+        },
+
+        // 窗口滚动
+        handleScroll() {
+            let obj = document.querySelector("#device");
+            let h = obj.clientHeight;
+            let t = obj.getBoundingClientRect().top;
+            document.querySelectorAll(".animate *").forEach(function(current) {
+                let _t = current.getBoundingClientRect().top;
+                let _h = current.getBoundingClientRect().height;
+                let _c = current.getAttribute("animate");
+                if (t - _h < _t && _t < t + h - 50) {
+                    current.classList.contains("animate__animated") || _c.split(" ").forEach((name) => {
+                        current.classList.add(name);
+                    });
+                }
+                else {
+                    current.classList.contains("animate__animated") && _c.split(" ").forEach((name) => {
+                        current.classList.remove(name);
+                    });
+                }
+            });
         },
 
         // EditorHeader 动作
@@ -517,6 +567,9 @@ export default {
                                 this.$http.get("set?id=" + id).then(() => {
                                     instance.close();
                                     this.loadEditorData('new');
+                                    setTimeout(() => {
+                                        this.handleMenu("page");
+                                    }, 300)
                                 });
                             }
                         }
@@ -580,7 +633,7 @@ export default {
             let data = {page: this.pageConfig, component: this.compConfig};
             this.$http.post("/set?id=" + this.id + "&name=config", {content: JSON.stringify(data)}).then((data) => {
                 this.$message({type:"success", message:"发布成功", duration: 2000});
-                this.action != "edit" && this.$router.push("edit?id=" + data.id);
+                this.action != "edit" && this.loadEditorData("edit", data.id);
             });
         },
 
@@ -789,6 +842,7 @@ export default {
                 padding-left: 6px;
             }
             textarea {
+                height: 34px;
                 padding-left: 6px;
             }
             .el-form-item__content {
@@ -797,7 +851,12 @@ export default {
             .el-input-number__decrease, .el-input-number__increase {
                 height: 28px;
                 margin-top: 4px;
+                background: #FFF;
                 line-height: 28px;
+            }
+            .el-color-picker__trigger {
+                background-color: #FFF;
+                border-color: #FFF;
             }
             .el-collapse{
                 border: 0;
@@ -806,6 +865,9 @@ export default {
                 }
                 .el-collapse-item__content {
                     padding-bottom: 5px;
+                }
+                .el-collapse-item__wrap {
+                    border-bottom: 0;
                 }
                 .el-icon-arrow-right {
                     margin: 0;
@@ -878,7 +940,7 @@ export default {
             width: 100%;
             height: 100%;
             content: '';
-            background: linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 0.3));
+            background: linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 0.3) 70%, rgba(255,255,255, 0.7) 100%);
         }
     }
     .contentHeadArc {

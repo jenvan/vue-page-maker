@@ -38,7 +38,7 @@
         <el-button
             type="primary"
             plain
-            @click="$emit('onPreview')"
+            @click="handlePreview"
         >
             预览
         </el-button>
@@ -114,6 +114,12 @@ export default {
         emitUpdateScale(curScale) {
             this.$emit('input', curScale);
             this.$emit('onUpdateScale', curScale);
+        },
+        handlePreview() {
+            let w = document.querySelector("#device").clientWidth;
+            let h = document.querySelector("#device").clientHeight;
+            this.$message("窗口尺寸：" + w + "px * " + h + "px");
+            this.$emit('onPreview');
         }
     }
 };

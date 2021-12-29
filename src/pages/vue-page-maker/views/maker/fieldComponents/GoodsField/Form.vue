@@ -7,20 +7,10 @@
     >
         <div :class="$style.row">
             <VueElementForm v-model="image" :schema="imageSchema" :form-footer="{show: false}"></VueElementForm>
-            <VueElementForm v-model="text1" :schema="textSchema" :form-footer="{show: false}"></VueElementForm>
-            <VueElementForm v-model="text2" :schema="textSchema" :form-footer="{show: false}"></VueElementForm>
-            <VueElementForm v-model="text3" :schema="textSchema" :form-footer="{show: false}"></VueElementForm>
-            <el-input v-model="link" :class="$style.link" prefix-icon="el-icon-link" clearable placeholder="请输入链接或留空" title="文字链接"></el-input>
-            <div :class="$style.extend">
-                <div>
-                    <el-select :class="$style.layout" v-model="direction" title="图文布局">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                    <el-input-number :class="$style.size" v-model="size" :min="0" :max="500" controls-position="right" :title="sizeTitle"></el-input-number>
-                </div>
-                <VueElementForm v-model="animate" :schema="animateSchema" :form-footer="{show: false}"></VueElementForm>
-                <VueElementForm v-model="style" :schema="styleSchema" :form-footer="{show: false}"></VueElementForm>
-            </div>
+            <el-input v-model="title"  :class="$style.text" prefix-icon="el-icon-goods" clearable placeholder="请输入商品标题" title="商品标题"></el-input>
+            <el-input v-model="label" :class="$style.text" prefix-icon="el-icon-star-off" clearable placeholder="请输入商品卖点" title="商品卖点"></el-input>
+            <el-input-number v-model="price" :min="0" :max="99999" title="商品价格"></el-input-number>
+            <VueElementForm v-model="extra" :schema="textSchema" :form-footer="{show: false}"></VueElementForm>
         </div>
     </el-form-item>
 </template>
@@ -38,43 +28,20 @@ export default {
     },
     data() {
         return {
-            options: [{
-                value: 'column',
-                label: '上图下文'
-            }, {
-                value: 'column-reverse',
-                label: '上文下图'
-            }, {
-                value: 'row',
-                label: '左图右文'
-            }, {
-                value: 'row-reverse',
-                label: '左文右图'
-            }],
         };
     },
     computed: {
-        sizeTitle () {
-            return /row/.test(this.direction) ? "图片宽度（px）， 最大占宽 40%" : "图片高度（px）";
-        },
         imageSchema() {
             let schema = makeImageItem({title: ""});
-            schema.properties.image.default ='https://s4.ax1x.com/2021/12/16/T9fouV.png';
+            schema.properties.image.default ='https://s4.ax1x.com/2021/12/27/Tre6Ve.jpg';
             return schema;
         },
         textSchema() {
             return makeTextItem({title: "", required: []});
         },
-        animateSchema() {
-            return makeAnimateItem({title:"图片动效", fold: true});
-        },
-        styleSchema() {
-            return makeStyleItem({title:"全局样式", fold: true});
-        },
-        ...importComputedFn(['image', 'text1', 'text2', 'text3', 'link', 'direction', 'size', 'animate', 'style']),
+        ...importComputedFn(['image', 'title', 'label', 'price', 'extra']),
     },
     methods: {
-
         ...importMethodsFn(),
     }
 };
@@ -88,7 +55,7 @@ export default {
     border: dotted 1px #999;
     border-radius: 5px;
 }
-.link {
+.text {
     margin-top: 3px;
 }
 .extend {

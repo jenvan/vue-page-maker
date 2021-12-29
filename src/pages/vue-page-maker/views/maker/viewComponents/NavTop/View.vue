@@ -1,14 +1,14 @@
 <template>
-    <div :class="$style.box" :style="{height: formData.height + 'em'}">
-        <div id="nav-top" :class="$style.nav" :style="{background: formData.bgcolor, color: formData.fgcolor, height: formData.height + 'em'}">
-            <div :class="$style.logo">
-                <ImageView :data="formData.logo" :lazy="false"></ImageView>
-            </div>
+    <div :class="$style.box" :style="{height: formData.height / 16 + 'em'}">
+        <div id="nav-top" :class="$style.nav" :style="{background: bgColor, color: fgColor, height: formData.height / 16 + 'em'}">
+            
+            <ImageView :class="$style.logo" :data="formData.logo" :lazy="false"></ImageView>
+
             <div :class="$style.bar">
 
                 <div :class="[$style.more , 'el-icon-menu']" :style="{display: moreDisplay}" @click="handleMore"></div>
 
-                <el-menu ref="nav" :class="[$style.menu]" :style="{display: menuDisplay}" :default-active="active" :background-color="formData.bgcolor" :text-color="formData.fgcolor" :active-text-color="formData.fgcolor" @select="handleSelect" @open="handleOpen">
+                <el-menu ref="nav" :class="{[$style.menu]: true, [$style.popup]: popup}" :style="{display: menuDisplay}" :default-active="active" :background-color="bgColor" :text-color="fgColor" :active-text-color="fgColor" @select="handleSelect" @open="handleOpen">
                     <span v-for="(item, index) in formData.list" :key="index">
                         <el-menu-item v-if="item.children.length == 0" :index="index.toString()">
                             {{item.self.text}}
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import {debounce, throttle} from '../../common/utils/noRepeat';
 export default {
     props: {
         formData: {
@@ -36,17 +37,27 @@ export default {
     data() {
         return {
             active: "0",
+            popup: false,
             moreDisplay: "none",
             menuDisplay: "none",
-            index: "0",
+            bgColor: "transparent",
+            fgColor: "#FFF",
         }
     },
     computed: {
     },
     mounted() {
-        setInterval(this.handleScroll, 200);
-        document.querySelector("#device").addEventListener("scroll", this.handleScroll);
-        //document.addEventListener("click", this.handleClose);
+        setTimeout(this.handleScroll, 300);
+        document.querySelector("#device").addEventListener("scroll", () => {
+            document.getElementById("nav-top").style.opacity = 0;
+            debounce(this.handleScroll, 500)();
+        });
+        window.addEventListener("resize", () => {
+            setTimeout(() => {
+                if (this.moreDisplay == "flex")
+                    this.menuDisplay = "none";
+            }, 200);
+        }, true);
     },
     methods: {
         handleScroll() {
@@ -58,10 +69,23 @@ export default {
             obj.style.left = (obj1.clientWidth - obj2.clientWidth) / -2 + "px";
             obj.style.width = obj1.clientWidth + "px";
 
+            if (this.formData.bgcolor) {
+                this.bgColor = this.formData.bgcolor;
+                this.fgColor = this.formData.fgcolor;
+            }
+            else {
+                this.bgColor = m > 50 ? "#FFF" : "transparent";
+                this.fgColor = m > 50 ? "#000" : this.formData.fgcolor;
+            }
+
             let inMobile = obj1.clientWidth < 1024;
+            this.popup = inMobile ? true : false;
             this.moreDisplay = inMobile ? "flex" : "none";
-            if (this.moreDisplay == "none")
+            if (this.moreDisplay == "none"){
                 this.menuDisplay = inMobile ? "none" : "flex";
+            }
+
+            document.getElementById("nav-top").style.opacity = 1;
         },
         handleMore() {
             this.menuDisplay = this.menuDisplay == "none" ? "flex" : "none";
@@ -93,23 +117,25 @@ export default {
     align-items: center;
     position: fixed;
     z-index: 9; 
-    min-height: 40px;
+    width: 100%;
+    min-height: 30px;
     max-height: 200px;
     padding: 0 1em;
     box-shadow: 0 2px 8px 0px #EEE;
+    transition: opacity .5s ease;
     clear: both;
 }
 .logo {
     float: left;
-    height: 80%;
+    max-height: 80%;
 }
 .bar {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     width: 60%;
-    max-width: 600px;
+    max-width: 800px;
     height: 100%;
 }
 .menu {
@@ -131,15 +157,24 @@ export default {
             text-align: center;
             display: inline-block;
         }
-        ul[role='menu'] {
-            background: #FFF !important;
-        }
         ul[role='menu'] li {
             min-width: auto;
             padding: 0 !important;
         }
         div, li, ul {
             font-size: 1em !important;
+        }
+        ul[role='menu'], ul[role='menu'] li {
+            background: #FFF !important;
+            color: #000 !important;
+        }
+    }
+}
+.popup {
+    :global {
+        li[role='menuitem'] {
+            background: #000 !important;
+            color: #FFF !important;
         }
     }
 }

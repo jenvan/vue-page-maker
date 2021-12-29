@@ -1,7 +1,7 @@
 <template>
     <el-row :class="[$style.box, animate]" :style="formData.style" type="flex">
-        <el-col v-for="(item,index) in formData.list" :key="index" :span="getSpan(index)" :style="{padding:formData.gutter + 'px'}">
-            <ImageView :data="item"></ImageView>
+        <el-col v-for="(item,index) in formData.list" :key="index" :span="getSpan(index)" :style="{padding:formData.gutter / 16 + 'em'}">
+            <ImageView :data="item" :style="{width:'100%',height:'100%'}"></ImageView>
         </el-col>
     </el-row>
 </template>
@@ -40,6 +40,7 @@ export default {
     align-items: center;
     width: 100%;
     min-height: 100px;
+    margin: 5px 0;
     clear: both;
     overflow: hidden;
 }

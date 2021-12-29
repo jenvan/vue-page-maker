@@ -1,6 +1,6 @@
 <template>
-    <div :class="[$style.box, animate]" :style="style">
-        <TextView :data="formData.title"></TextView>
+    <div :class="{[$style.box] : true, animate : animate.length > 0}" :style="style">
+        <TextView :data="formData.title" :animate="animate"></TextView>
     </div>
 </template>
 
@@ -18,9 +18,9 @@ export default {
             return {...style};
         },
         animate() {
-            const {animate} = this.formData;
-            return Object.keys(animate).reduce((arr, key) => {
-                arr.push(animate[key]);
+            if (!this.formData.animate || !this.formData.animate.animateName || this.formData.animate.animateName == "") return "";
+            return Object.values(this.formData.animate).reduce((arr, v) => {
+                v.length > 0 && arr.push(v);
                 return arr;
             }, ["animate__animated"]).join(" ");
         },

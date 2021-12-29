@@ -88,6 +88,18 @@ export function makeTextItem({
                 type: 'string',
                 default: '1em'
             },
+            fontWeight: {
+                type: 'string',
+                default: '400'
+            },
+            lineHeight: {
+                type: 'string',
+                default: '150%'
+            },
+            textAlign: {
+                type: 'string',
+                default: 'left'
+            },
             link: {
                 type: 'string',
                 default: '',
@@ -238,13 +250,13 @@ export function makeStyleItem({
                 default: 'solid',
                 'ui:hidden': true,
             },
-            borderWidth: {
-                type: 'string',
-                default: '0px',
-            },
             borderColor: {
                 type: 'string',
                 default: ''
+            },
+            borderWidth: {
+                type: 'string',
+                default: '0px',
             },
             borderRadius: {
                 type: 'string',
@@ -286,7 +298,7 @@ export function makeCellItem({
             size: {
                 name: '图片尺寸',
                 type: 'number',
-                default: 32,
+                default: 50,
             },
             image: {
                 name: '图片',
@@ -319,6 +331,42 @@ export function makeCellItem({
                 name: '样式',
                 type: 'object',
                 default: {},
+            },
+        },
+        required: `${required}`
+    };
+}
+
+
+export function makeGoodsItem({
+    title = '商品单元格',
+    required = []
+} = { }) {
+    return {
+        'ui:field': 'GoodsField',
+        title: `${title}`,
+        type: 'object',
+        properties: {
+            image: {
+                name: '图片',
+                type: 'object',
+                default: {}
+            },
+            title: {
+                name: '标题',
+                type: 'string',
+            },
+            label: {
+                name: '卖点',
+                type: 'string',
+            },
+            price: {
+                name: '价格',
+                type: 'number',
+            },
+            extra: {
+                name: '扩展字段',
+                type: 'object',
             },
         },
         required: `${required}`

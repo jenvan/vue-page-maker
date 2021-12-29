@@ -4,8 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>页面生成器 | Vue Page Maker</title>
+    <title>页面加载中 ……</title>
 </head>
+<style>
+    body {
+      -webkit-text-size-adjust: 100% !important;
+      -moz-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
+    }
+</style>
+<script type="text/javascript">
+(function() {
+    if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+    }
+    if (document.addEventListener) {
+    document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+    document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+    }
+    function handleFontSize() {
+    WeixinJSBridge.invoke('setFontSizeCallback', {'fontSize' : 0});
+    WeixinJSBridge.on('menu:setfont', function() {
+        WeixinJSBridge.invoke('setFontSizeCallback', {'fontSize' : 0});
+    });
+    }
+})();
+</script>
 <body>
     <div id="app"></div>
 </body>

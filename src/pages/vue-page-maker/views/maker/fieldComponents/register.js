@@ -8,7 +8,9 @@ const ExtraComponents = {
     StyleField: () => import('./StyleField/Form.vue'),
     AnimateField: () => import('./AnimateField/Form.vue'),
     CellField: () => import('./CellField/Form.vue'),
-    CellView: () => import('./CellField/View.vue')
+    CellView: () => import('./CellField/View.vue'),
+    GoodsField: () => import('./GoodsField/Form.vue'),
+    GoodsView: () => import('./GoodsField/View.vue'),
 };
 
 Object.entries(ExtraComponents).forEach(([key, value]) => {

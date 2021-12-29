@@ -29,11 +29,11 @@ export default {
         width: {
             title: "每格宽度",
             type: "number",
-            default: 5,
+            default: 100,
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 1,
-            maximum: 50
+            maximum: 200
         },
         gutter: {
             title: "图标间距",

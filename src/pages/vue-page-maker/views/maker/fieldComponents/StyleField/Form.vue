@@ -17,9 +17,9 @@
                     <el-col :span="4" :class="$style.label">边框</el-col>
                     <el-col :span="20" :class="$style.field">
                         <el-input v-model="borderWidth" title="边框粗细" placeholder="n 或 n n n n">
-                            <el-color-picker slot="prepend" v-model="borderColor" title="边框颜色" size="small"></el-color-picker>
-                            <el-input-number slot="append"  v-model="borderRadius" :min="0" :max="999" controls-position="right" title="边框圆角大小"></el-input-number>
+                            <el-input-number slot="append" v-model="borderRadius" :min="0" :max="999" controls-position="right" title="边框圆角大小"></el-input-number>
                         </el-input>
+                        <el-color-picker v-model="border" title="边框颜色" size="small"></el-color-picker>
                     </el-col>
 
                     <el-col :span="4" :class="$style.label">边距</el-col>
@@ -33,7 +33,8 @@
                             <template slot="prepend">|&nbsp;内&nbsp;&nbsp;</template>
                         </el-input>
                     </el-col>
-
+                    
+                    <!-- 
                     <el-col :span="4" :class="$style.label">位置</el-col>
                     <el-col :span="20" :class="$style.field">
                         <el-radio-group v-model="textAlign">
@@ -41,7 +42,9 @@
                             <el-radio label="center">居中</el-radio>
                             <el-radio label="right">靠右</el-radio>
                         </el-radio-group>
-                    </el-col>
+                    </el-col> 
+                    -->
+
                 </el-row>
 
             </el-collapse-item>
@@ -96,7 +99,16 @@ export default {
                 return this.set("borderRadius", value + "px");
             }
         },
-        ...importComputedFn(['borderWidth', 'borderColor', 'margin', 'padding', 'textAlign']),
+        border: {
+            get() {
+                return this.get("borderColor");
+            },
+            set(value) {
+                this.set("borderColor", value);
+                this.set("borderStyle", "solid");
+            }
+        },
+        ...importComputedFn(['borderWidth', 'margin', 'padding']),
     },
     methods: {
         ...importMethodsFn(),

@@ -27,8 +27,8 @@ import componentPackGoodsCategory from '../viewComponents/GoodsCategory';
 // 推荐
 import componentPackGoodsRecommend from '../viewComponents/GoodsRecommend';
 
-// 秒杀
-import componentPackGoodsFlashSale from '../viewComponents/GoodsFlashSale';
+// 独个商品
+import componentPackGoodsAlone from '../viewComponents/GoodsAlone';
 
 // 优惠券
 import componentPackCoupon from '../viewComponents/Coupon';
@@ -67,7 +67,7 @@ const tools = [
             componentPack: componentPackImage
         }, {
             title: '图片墙',
-            maxNum: 2,
+            maxNum: 10,
             icon: 'el-icon-picture',
             componentPack: componentPackImageWall
         }, {
@@ -104,10 +104,10 @@ const tools = [
             icon: 'el-icon-s-goods',
             componentPack: componentPackGoodsRecommend
         }, {
-            title: '秒杀商品',
-            maxNum: 2,
+            title: '单个商品',
+            maxNum: 10,
             icon: 'el-icon-picture',
-            componentPack: componentPackGoodsFlashSale
+            componentPack: componentPackGoodsAlone
         }, {
             title: '分类推荐',
             maxNum: 5,
@@ -118,11 +118,16 @@ const tools = [
     {
         groupName: '营销互动类',
         componentList: [{
-            title: '优惠券',
+            title: '领券',
             maxNum: 1,
             icon: 'el-icon-s-ticket',
             componentPack: componentPackCoupon
-        }]
+        },{
+            title: '抽奖',
+            maxNum: 1,
+            icon: 'el-icon-s-ticket',
+            componentPack: componentPackCoupon
+        },]
     },
     {
         groupName: '导航类',

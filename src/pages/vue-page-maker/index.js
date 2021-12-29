@@ -8,6 +8,11 @@ import router from './router.js';
 import http from './http.js'
 import App from './App';
 
+new Vue({
+    router,
+    render: h => h(App)
+}).$mount('#app');
+
 Vue.use(animated);
 
 const {
@@ -27,11 +32,12 @@ Vue.prototype.$message = Message;
 
 Vue.prototype.$host = "//app.fuchijihua.com";
 Vue.prototype.$http = http;
-
-new Vue({
-    router,
-    render: h => h(App)
-}).$mount('#app');
-
-
 http.defaults.baseURL = Vue.prototype.$host + "/maker";
+
+Vue.prototype.$redirect = function(link) {
+    if (typeof link != "string" || link.length == 0 || document.querySelector(".editMode") != null)
+        return ;
+    if (link.substring(0, 4) == "http")
+        return window.open(link, "_blank");
+    return router.push(link);
+};

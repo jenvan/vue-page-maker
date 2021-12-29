@@ -16,11 +16,11 @@ export default {
         height: {
             title: "图片高度",
             type: "number",
-            default: 120,
+            default: 200,
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 1,
-            maximum: 50
+            maximum: 500
         },
         list: {
             title: "图文列表",
@@ -30,11 +30,11 @@ export default {
                 required: [],
                 properties: {
                     image: makeImageItem(),
-                    text: makeTextItem({title: "描述", required: []}),
                     label: {
-                        "title": "标题（非卡片形式不显示）",
+                        "title": "标题",
                         "type": "string",
                     },
+                    text: makeTextItem({title: "描述", required: []}),
                 }
             },
             minItems: 2,

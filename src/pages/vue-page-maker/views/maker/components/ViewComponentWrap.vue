@@ -3,7 +3,7 @@
         v-model="editorItem.isEdit"
         :popper-class="$style.popper"
         :disabled="isPreview"
-        placement="right-start"
+        placement="left-start"
         class="js_viewComponentWrap viewComponentWrap"
         width="26"
         transition="none"

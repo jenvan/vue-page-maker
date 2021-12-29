@@ -1,9 +1,7 @@
 <template>
     <div :class="[$style.box]">
         <div v-for="(item,index) in formData.list" :key="index" :style="{width: width}">
-            <div :style="{padding: formData.gutter + 'px'}">
-                <ImageView :data="item.image"></ImageView>
-            </div>
+            <ImageView :data="item.image" :style="{padding: formData.gutter * 0.1 + 'em'}"></ImageView>
             <TextView :data="item.text"></TextView>
         </div>
     </div>
@@ -19,8 +17,8 @@ export default {
     },
     computed: {
         width() {
-            let width = this.formData.width || 6;
-            return width + "em";
+            let width = this.formData.width || 100;
+            return width / 16 + "em";
         }
     }
 };

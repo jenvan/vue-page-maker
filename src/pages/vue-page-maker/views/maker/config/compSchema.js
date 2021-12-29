@@ -2,7 +2,7 @@
 export default [{
         name: 'Carousel',
         value: {
-            height: 120,
+            height: 15,
             list: [{
                 image: {image:"https://img.alicdn.com/tps/i4/TB1ecCsOCzqK1RjSZPxSuw4tVXa.jpg"}
             },{
@@ -52,10 +52,10 @@ export default [{
                 },
                 text1: {
                     text: "超值推荐",
-                    fontSize: "16px",
+                    fontSize: "1.5em",
                 },
                 direction: "row",
-                size: 32,
+                size: 4,
                 style: {
                     padding: "0 0 0 5px",
                     textAlign: "left",

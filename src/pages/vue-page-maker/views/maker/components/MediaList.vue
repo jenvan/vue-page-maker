@@ -6,8 +6,8 @@
       &nbsp;
       <el-button type="primary" plain @click="handleAdd">添加</el-button>
       &nbsp;
-      <el-upload name="file" action="https://jsonplaceholder.typicode.com/posts/" accept="image/png, image/jpeg, image/gif" :show-file-list="false" :headers="headers" :on-change="handleUpload">  
-        <el-button type="primary" plain>上传本地图片</el-button>
+      <el-upload name="file" accept="image/png, image/jpeg, image/gif" :action="server.url" :data="server.data" :show-file-list="false" :on-change="handleUpload">  
+        <el-button type="primary" :disabled="server.data == null" plain>上传本地图片</el-button>
       </el-upload>
     </div>
 
@@ -148,6 +148,10 @@ export default {
         tag_name: [],
         tag_display: [],
         tag_choose: [],
+        server: {
+          url: "",
+          data: null
+        },
       }
     },
 
@@ -155,6 +159,11 @@ export default {
       this.media_all = {...this.media} || {};
       this.tag_all = {...this.mediaTag} || {};
       this.tag_name = Object.keys(this.tag_all);
+      this.$http.get("/upauth").then((obj) => {
+        let {url, ...data} = obj;
+        this.server.url = url;
+        this.server.data = data;
+      });
     },
 
     methods: {
@@ -166,8 +175,11 @@ export default {
           this.url = "";
         });
       },
-      handleUpload() {
-        this.$message("暂不支持");
+      handleUpload(data) {
+        if (data.status == "success") {
+          this.url = "http://vue-page-maker.test.upcdn.net" + data.response.url;
+          this.handleAdd();
+        }
       },
       handleTag(tag) {
           let index = this.tag_display.indexOf(tag);

@@ -1,9 +1,9 @@
 <template>
-    <div :class="$style.row" :style="{flexDirection: data.direction}">
-        <div :class="$style.item" :style="{...size[0]}">
+    <div :class="$style.row" :style="{flexDirection: data.direction, ...style[1]}">
+        <div :class="$style.item" :style="{padding: '1em', ...size[0]}">
             <ImageView v-if="hasImage" :data="data.image" :animate="data.animate"></ImageView>
         </div>
-        <div v-if="hasText" :class="{[$style.item]: true, [$style.link]: hasLink}" :style="{...data.style, ...size[1]}" @click="handleClick">
+        <div v-if="hasText" :class="{[$style.item]: true, [$style.link]: hasLink}" :style="{padding: style[0], ...size[1]}" @click="handleClick">
             <TextView :data="data.text1"></TextView>
             <TextView :data="data.text2"></TextView>
             <TextView :data="data.text3"></TextView>
@@ -22,10 +22,14 @@ export default {
     },
     computed: {
         size() {
-            let s = this.data.size || 0;
+            let s = this.data.size / 16 || 0;
             if (!this.data.direction || /column/.test(this.data.direction))
                 return [{width: "100%", height: s + "em"}, {width: "100%"}];
-            return [{width: s + "em"}, {width: "calc(100% - " + s + "em"}];
+            return [{width: s + "em", maxWidth: "40%"}, {width: "calc(100% - " + s + "em)", minWidth: "60%"}];
+        },
+        style() {
+            let {padding, ...other} = this.data.style;
+            return [padding, other];
         },
         hasImage() {
             return this.data.image && this.data.image.image && this.data.image.image.length > 0;
@@ -43,9 +47,7 @@ export default {
     methods: {
         handleClick() {
             if (!this.hasLink) return;
-            if (this.data.link.substring(0, 4) == "http")
-                return window.open(this.data.link, "_blank");
-            return this.$router.push(this.data.link);
+            this.$redirect(this.data.link);
         },
     },
 };
@@ -63,7 +65,7 @@ export default {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
-    overflow-x: hidden;
+    overflow: hidden;
     :global span {
         margin: 0 5px;
     }

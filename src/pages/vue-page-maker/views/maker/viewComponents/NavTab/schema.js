@@ -26,8 +26,17 @@ export default {
         }
     },
     properties: {
+        height: {
+            title: "导航高度",
+            type: "number",
+            default: 3,
+            "ui:widget": "ElSlider",
+            multipleOf: 1,
+            minimum: 40,
+            maximum: 200
+        },
         gutter: {
-            title: "图标间距",
+            title: "图标文字间距",
             type: "number",
             default: 3,
             "ui:widget": "ElSlider",

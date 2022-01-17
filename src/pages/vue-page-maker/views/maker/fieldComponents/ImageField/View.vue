@@ -1,5 +1,5 @@
 <template>
-    <el-image :src="image" :class="className" :animate="animateClass" :fit="fit" :lazy="lazy" scroll-container="#page" @click="handleClick">
+    <el-image :src="image" :class="className" :animate="animateClass" :fit="fit" :lazy="lazy" scroll-container="#device" @click="handleClick">
         <i slot="error" class="el-icon-picture-outline"></i>
     </el-image>
 </template>

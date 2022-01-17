@@ -1,8 +1,8 @@
 <template>
-    <div :class="$style.box">
-        <div id="nav-tab" :class="$style.nav">
-            <div v-for="(item,index) in formData.list" :key="index" :style="{width: width, padding: formData.gutter + 'px'}">
-                <ImageView :data="item.image"></ImageView>
+    <div id="nav-tab-wrap" :class="$style.box">
+        <div id="nav-tab" :class="$style.nav" :style="{height: formData.height / 16 + 'em'}">
+            <div v-for="(item,index) in formData.list" :key="index" :style="{width: width}">
+                <ImageView :data="item.image" :lazy="false" :style="{paddingBottom: formData.gutter + 'px'}"></ImageView>
                 <TextView :data="item.text"></TextView>
             </div>
         </div>
@@ -25,18 +25,26 @@ export default {
         }
     },
     mounted() {
-        setInterval(this.handleScroll, 300);
-        document.querySelector("#device").addEventListener("scroll", debounce(this.handleScroll, 300));
+        setTimeout(this.handleScroll, 300);
+        document.querySelector("#device").addEventListener("scroll", this.handleScroll);
     },
     methods: {
         handleScroll() {
             let obj = document.getElementById("nav-tab");
-            let obj1 = document.getElementById("device");
-            let obj2 = document.getElementById("page");
-            let m = obj1.clientHeight + obj1.scrollTop || document.documentElement.clientHeight;
-            obj.style.top = (m - obj.clientHeight) + "px";
-            obj.style.left = (obj1.clientWidth - obj2.clientWidth) / -2 + "px";
-            obj.style.width = obj1.clientWidth + "px";
+            let device = document.getElementById("device");
+
+            obj.style.width = device.clientWidth + "px";
+
+            if (device.scrollTop + device.clientHeight < device.scrollHeight - obj.clientHeight){
+                obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
+                obj.style.left = device.getBoundingClientRect().left + "px";
+                obj.style.top = (device.getBoundingClientRect().top + device.clientHeight - obj.clientHeight) + "px";
+            }
+            else {
+                document.getElementById("nav-tab-wrap").appendChild(obj);
+                obj.style.left = 0;
+                obj.style.top = (device.scrollHeight - obj.clientHeight) + "px";
+            }
         }
     }
 };
@@ -44,8 +52,10 @@ export default {
 
 <style module>
 .box {
+    position: static;
+    z-index: 9;
     width: 100%;
-    height: 40px;
+    min-height: 40px;
     margin-top: 20px;
     display: block;
 }
@@ -55,10 +65,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    z-index: 7;
+    z-index: 8;
+    width: 100%;
     background: #FFF;
     border-top: solid 1px #EEE;
-    box-shadow: 0 -2px 8px 0px #EEE;
+    text-align: center;
     clear: both;
     overflow: hidden;
     :global {

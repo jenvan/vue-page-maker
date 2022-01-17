@@ -115,7 +115,7 @@
                 </el-tabs>
             </div>
 
-            <div :class="$style.deviceWrap">
+            <div id="page" :class="$style.deviceWrap">
                 <div id="device"
                     :class="$style.device"
                     :style="{
@@ -129,8 +129,7 @@
                         <div :class="[$style.contentHeadArc, $style[pageConfig['heffect']]]"></div>
                     </div>
 
-                    <div id="page"
-                        :class="$style.contentBody" :style="{
+                    <div :class="$style.contentBody" :style="{
                         width: pageConfig['width'],
                         maxWidth: (pageConfig['mwidth'] || '1180px'),
                         minHeight: '100%',
@@ -502,8 +501,8 @@ export default {
             }
 
             setTimeout(() => {
-                let o = document.querySelector("#device");
-                let w = o.clientWidth;
+                let o = document.querySelector("#page");
+                let w = document.querySelector("#device").clientWidth;
                 if (w <= 375){
                     o.style.fontSize = 100 / 1.75 + "%";
                 }
@@ -708,16 +707,6 @@ export default {
 </script>
 
 <style>
-    body.page-decorate-design{
-        overflow: hidden;
-    }
-    .flip-list-move {
-        transition: transform 0.3s;
-    }
-    .no-move {
-        transition: transform 0s;
-    }
-
     @media screen and (max-width: 768px) {
         .hiddenInMobile {
             display: none;
@@ -729,6 +718,9 @@ export default {
             z-index: 8;
             width: 100%;
         }
+    }
+    body.page-decorate-design{
+        overflow: hidden;
     }
 </style>
 <style module>
@@ -982,9 +974,10 @@ export default {
     .contentBody {
         position: static;
         z-index: 6;
-        margin-left: 50%;
         min-height: 100%;
-        transform: translate(-50%, 0);
+        /* margin-left: 50%;
+        transform: translate(-50%, 0); */
+        margin: 0 auto;
     }
 
     .dragArea {

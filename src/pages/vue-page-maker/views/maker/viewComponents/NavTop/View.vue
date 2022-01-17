@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.box" :style="{height: formData.height / 16 + 'em'}">
+    <div id="nav-top-wrap" :class="$style.box" :style="{height: formData.height / 16 + 'em'}">
         <div id="nav-top" :class="$style.nav" :style="{background: bgColor, color: fgColor, height: formData.height / 16 + 'em'}">
             
             <ImageView :class="$style.logo" :data="formData.logo" :lazy="false"></ImageView>
@@ -62,12 +62,20 @@ export default {
     methods: {
         handleScroll() {
             let obj = document.getElementById("nav-top");
-            let obj1 = document.getElementById("device");
-            let obj2 = document.getElementById("page");
-            let m = obj1.scrollTop || 0;
-            obj.style.top = m + "px";
-            obj.style.left = (obj1.clientWidth - obj2.clientWidth) / -2 + "px";
-            obj.style.width = obj1.clientWidth + "px";
+            let device = document.getElementById("device");
+            let m = device.scrollTop || 0;
+
+            if (m >= 50){
+                obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
+                obj.style.top = device.getBoundingClientRect().top + "px";
+                obj.style.left = device.getBoundingClientRect().left + "px";
+            }
+            else {
+                document.getElementById("nav-top-wrap").appendChild(obj);
+                obj.style.top = 0;
+                obj.style.left = 0;
+            }
+            obj.style.width = device.clientWidth + "px";
 
             if (this.formData.bgcolor) {
                 this.bgColor = this.formData.bgcolor;
@@ -78,7 +86,7 @@ export default {
                 this.fgColor = m > 50 ? "#000" : this.formData.fgcolor;
             }
 
-            let inMobile = obj1.clientWidth < 1024;
+            let inMobile = device.clientWidth < 1024;
             this.popup = inMobile ? true : false;
             this.moreDisplay = inMobile ? "flex" : "none";
             if (this.moreDisplay == "none"){
@@ -116,7 +124,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    z-index: 9; 
+    z-index: 8;
     width: 100%;
     min-height: 30px;
     max-height: 200px;

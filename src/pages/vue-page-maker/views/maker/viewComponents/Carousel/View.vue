@@ -104,7 +104,6 @@ export default {
     min-height: 10em;
     margin: 0 auto;
     padding: 1em;
-    box-shadow: 0 0 8px #999;
     overflow: auto;
 }
 </style>

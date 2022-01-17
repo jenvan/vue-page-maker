@@ -17,7 +17,7 @@ jobs:
         DT=$(date "+%y.%j.")`echo $(date "+%k%M")`
         TAG=${DT:1}
         echo "tag=${TAG}" >> $GITHUB_ENV
-        npm install && npm run build
+        yarn && yarn build
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

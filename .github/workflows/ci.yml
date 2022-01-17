@@ -22,6 +22,7 @@ jobs:
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
+        deploy_key: ${{ secrets.DEPLOY_KEY }}
         disable_nojekyll: true
         external_repository: jenvan/vue-page-maker
         publish_branch: build

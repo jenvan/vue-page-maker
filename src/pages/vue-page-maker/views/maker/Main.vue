@@ -161,6 +161,7 @@
                                         :is="item.componentViewName"
                                         slot="componentView"
                                         :form-data="item.componentValue"
+                                        :zoom="scale/100"
                                     >
                                     </component>
                                 </ViewComponentWrap>
@@ -343,6 +344,11 @@ export default {
         }
     },
     watch: {
+        $route: function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                this.loadEditorData(this.action, this.id);
+            }
+        },
         isPreview: {
             handler (val) {
                 this.handleResize();
@@ -368,7 +374,7 @@ export default {
     methods: {
         async loadEditorData(action = "", id = "") {
             if (action != this.action || id != this.id) {
-                await this.$router.push(action + (id.length > 0 ? "?id=" + id : ""));
+                return this.$router.push(action + (id.length > 0 ? "?id=" + id : ""));
             }
 
             if (id && id.length > 16){
@@ -528,7 +534,7 @@ export default {
                 let _h = current.getBoundingClientRect().height;
                 let _c = current.getAttribute("animate");
                 if (t - _h < _t && _t < t + h - 50) {
-                    current.classList.contains("animate__animated") || _c.split(" ").forEach((name) => {
+                    current.classList.contains("animate__animated") && _c.split(" ").forEach((name) => {
                         current.classList.add(name);
                     });
                 }

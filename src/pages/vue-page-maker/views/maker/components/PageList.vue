@@ -7,6 +7,12 @@
     style="width: 100%">
     <el-table-column
       fixed
+      prop="id"
+      label="#"
+      width="240">
+    </el-table-column>
+    <el-table-column
+      fixed
       sortable
       prop="dt"
       label="日期"

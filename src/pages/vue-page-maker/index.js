@@ -37,6 +37,7 @@ http.defaults.baseURL = Vue.prototype.$host + "/maker";
 Vue.prototype.$redirect = function(link) {
     if (typeof link != "string" || link.length == 0 || document.querySelector(".editMode") != null)
         return ;
+    console.log("-=>", link);
     if (link.substring(0, 4) == "http")
         return window.open(link, "_blank");
     return router.push(link);

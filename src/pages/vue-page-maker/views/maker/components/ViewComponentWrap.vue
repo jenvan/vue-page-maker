@@ -163,7 +163,7 @@ export default {
         margin: 0 auto;
         position: relative;
         cursor: move;
-        box-shadow: 0 0 2px 0 rgba(0,0,0,.25);
+        box-shadow: 0 0 2px 0 rgba(0,0,0,.1);
         outline: none;
         @nest :global .draggableSlot :local & {
             cursor: no-drop;

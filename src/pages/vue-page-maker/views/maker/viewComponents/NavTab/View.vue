@@ -16,6 +16,10 @@ export default {
         formData: {
             type: Object,
             default: () => ({})
+        },
+        zoom: {
+            type: Number,
+            default: 1
         }
     },
     computed: {
@@ -28,8 +32,19 @@ export default {
         setTimeout(this.handleScroll, 300);
         document.querySelector("#device").addEventListener("scroll", this.handleScroll);
     },
+    destroyed() {
+        let obj = document.getElementById("nav-tab");
+        obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
+    },
+    watch: {
+        zoom () {
+            this.handleScroll();
+        },
+    },
     methods: {
         handleScroll() {
+            if (!document.getElementById("nav-tab")) return;
+
             let obj = document.getElementById("nav-tab");
             let device = document.getElementById("device");
 
@@ -37,11 +52,13 @@ export default {
 
             if (device.scrollTop + device.clientHeight < device.scrollHeight - obj.clientHeight){
                 obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
-                obj.style.left = device.getBoundingClientRect().left + "px";
-                obj.style.top = (device.getBoundingClientRect().top + device.clientHeight - obj.clientHeight) + "px";
+                obj.style.zoom = this.zoom;
+                obj.style.left = device.getBoundingClientRect().left / this.zoom  + "px";
+                obj.style.top = (device.getBoundingClientRect().top / this.zoom + device.clientHeight - obj.clientHeight) + "px";
             }
             else {
                 document.getElementById("nav-tab-wrap").appendChild(obj);
+                obj.style.zoom = 1;
                 obj.style.left = 0;
                 obj.style.top = (device.scrollHeight - obj.clientHeight) + "px";
             }
@@ -65,7 +82,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    z-index: 8;
+    z-index: 6;
     width: 100%;
     background: #FFF;
     border-top: solid 1px #EEE;

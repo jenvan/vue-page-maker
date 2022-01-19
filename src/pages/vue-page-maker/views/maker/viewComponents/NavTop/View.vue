@@ -8,7 +8,7 @@
 
                 <div :class="[$style.more , 'el-icon-menu']" :style="{display: moreDisplay}" @click="handleMore"></div>
 
-                <el-menu ref="nav" :class="{[$style.menu]: true, [$style.popup]: popup}" :style="{display: menuDisplay}" :default-active="active" :background-color="bgColor" :text-color="fgColor" :active-text-color="fgColor" @select="handleSelect" @open="handleOpen">
+                <el-menu ref="nav" :class="{[$style.menu]: true, [$style.mobile]: inMobile}" :style="{display: menuDisplay}" :background-color="bgColor" :text-color="fgColor" :active-text-color="fgColor" @select="handleSelect" @open="handleOpen">
                     <span v-for="(item, index) in formData.list" :key="index">
                         <el-menu-item v-if="item.children.length == 0" :index="index.toString()">
                             {{item.self.text}}
@@ -32,50 +32,68 @@ export default {
         formData: {
             type: Object,
             default: () => ({})
+        },
+        zoom: {
+            type: Number,
+            default: 1
         }
     },
     data() {
         return {
-            active: "0",
-            popup: false,
-            moreDisplay: "none",
-            menuDisplay: "none",
+            inMobile: false,
             bgColor: "transparent",
             fgColor: "#FFF",
+            popupMenu: false,
+            moreDisplay: "none",
+            menuDisplay: "none",
         }
-    },
-    computed: {
     },
     mounted() {
         setTimeout(this.handleScroll, 300);
         document.querySelector("#device").addEventListener("scroll", () => {
-            document.getElementById("nav-top").style.opacity = 0;
-            debounce(this.handleScroll, 500)();
+            if (document.getElementById("nav-top")){
+                document.getElementById("nav-top").style.opacity = 0;
+                debounce(this.handleScroll, 500)();
+            }
         });
-        window.addEventListener("resize", () => {
-            setTimeout(() => {
-                if (this.moreDisplay == "flex")
-                    this.menuDisplay = "none";
-            }, 200);
-        }, true);
+    },
+    destroyed() {
+        let obj = document.getElementById("nav-top");
+        obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
+    },
+    watch: {
+        zoom () {
+            this.handleScroll();
+        }
     },
     methods: {
+        handleMenu(value) {
+            this.popupMenu = value;
+            this.moreDisplay = this.inMobile ? "flex" : "none";
+            this.menuDisplay = !this.inMobile || this.popupMenu ? "flex" : "none";
+        },
         handleScroll() {
+            if (!document.getElementById("nav-top")) return;
+
             let obj = document.getElementById("nav-top");
             let device = document.getElementById("device");
             let m = device.scrollTop || 0;
 
             if (m >= 50){
                 obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
-                obj.style.top = device.getBoundingClientRect().top + "px";
-                obj.style.left = device.getBoundingClientRect().left + "px";
+                obj.style.zoom = this.zoom;
+                obj.style.top = device.getBoundingClientRect().top / this.zoom + "px";
+                obj.style.left = device.getBoundingClientRect().left / this.zoom + "px";
             }
             else {
                 document.getElementById("nav-top-wrap").appendChild(obj);
+                obj.style.zoom = 1;
                 obj.style.top = 0;
                 obj.style.left = 0;
             }
             obj.style.width = device.clientWidth + "px";
+
+            this.inMobile = device.clientWidth < 1024;
 
             if (this.formData.bgcolor) {
                 this.bgColor = this.formData.bgcolor;
@@ -86,22 +104,24 @@ export default {
                 this.fgColor = m > 50 ? "#000" : this.formData.fgcolor;
             }
 
-            let inMobile = device.clientWidth < 1024;
-            this.popup = inMobile ? true : false;
-            this.moreDisplay = inMobile ? "flex" : "none";
-            if (this.moreDisplay == "none"){
-                this.menuDisplay = inMobile ? "none" : "flex";
-            }
+            this.handleMenu(!this.inMobile);
 
             document.getElementById("nav-top").style.opacity = 1;
         },
         handleMore() {
-            this.menuDisplay = this.menuDisplay == "none" ? "flex" : "none";
+            this.handleMenu(!this.popupMenu);
         },
-        handleSelect() {
-            if (this.moreDisplay == "flex")
-                this.menuDisplay = "none";
-            console.log(arguments)
+        handleSelect(index) {
+            this.handleMenu(false);
+            let link = "";
+            let arr = index.split("-");
+            if (arr.length == 1) {
+                link = this.formData.list[arr[0]].self.link;
+            }
+            if (arr.length == 2) {
+                link = this.formData.list[arr[0]].children[arr[1]].link;
+            }
+            this.$redirect(link);
         },
         handleOpen(index) {
             this.index = index;
@@ -124,7 +144,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    z-index: 8;
+    z-index: 6;
     width: 100%;
     min-height: 30px;
     max-height: 200px;
@@ -177,15 +197,14 @@ export default {
             color: #000 !important;
         }
     }
-}
-.popup {
-    :global {
-        li[role='menuitem'] {
+    &.mobile {
+        :global li[role='menuitem'] {
             background: #000 !important;
             color: #FFF !important;
         }
     }
 }
+
 .more {
     display: flex;
     justify-content: flex-end;

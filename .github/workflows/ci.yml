@@ -27,5 +27,6 @@ jobs:
         external_repository: jenvan/vue-page-maker
         publish_branch: build
         publish_dir: ./dist
+        cname: www.siteimg.cn
         tag_name: ${{ env.tag }}
         tag_message: 'Deployment ${{ env.tag }}'

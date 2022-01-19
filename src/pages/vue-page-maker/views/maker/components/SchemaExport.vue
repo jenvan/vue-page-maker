@@ -1,14 +1,7 @@
 <template>
-    <div style="text-align: right;">
+    <div style="text-align: right;" @click="copy">
+        <div style="padding: 0 5px 5px 0;">* 点击下方代码区域将页面配置信息复制到剪贴板 *</div>
         <JsonPrettyPrint :json-string="code"></JsonPrettyPrint>
-        <div style="margin-top: 20px;">
-            <el-button
-                type="primary"
-                @click="copy"
-            >
-                复制代码
-            </el-button>
-        </div>
     </div>
 </template>
 
@@ -26,25 +19,16 @@ export default {
             default: () => ({})
         }
     },
-    data() {
-        return {
-            copied: false
-        };
-    },
     methods: {
         copy() {
-            if (this.copied) {
-                return;
-            }
             const pre = this.$el.querySelectorAll('pre')[0];
             pre.setAttribute('contenteditable', 'true');
             pre.focus();
             document.execCommand('selectAll', false, null);
-            this.copied = document.execCommand('copy');
+            document.execCommand('copy');
             pre.removeAttribute('contenteditable');
             setTimeout(() => {
-                this.copied = false;
-                this.$message.success('复制成功');
+                this.$message.success('已复制到剪贴板');
             }, 300);
         }
     }

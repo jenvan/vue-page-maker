@@ -204,7 +204,7 @@ import SchemaExport from './components/SchemaExport.vue';
 
 import toolList from './config/tools';
 import pageSchema from './config/pageSchema';
-import compSchema from './config/compSchema';
+import defaultConfig from './config/demo';
 
 import './fieldComponents/register';
 
@@ -399,8 +399,8 @@ export default {
             }
             
             document.title = "页面编辑器 - VUE PAGE MAKER";
-            this.pageConfig = {};
-            this.compConfig = compSchema;
+            this.pageConfig = defaultConfig.page;
+            this.compConfig = defaultConfig.component;
             this.isPreview = false;
             this.loading = false;
         },

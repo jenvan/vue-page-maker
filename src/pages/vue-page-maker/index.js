@@ -30,7 +30,7 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$message = Message;
 
-Vue.prototype.$host = "//app.fuchijihua.com";
+Vue.prototype.$host = process.env.API_BASE_URL;
 Vue.prototype.$http = http;
 http.defaults.baseURL = Vue.prototype.$host + "/maker";
 

@@ -30,6 +30,8 @@ log({
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+process.env.API_BASE_URL = isProduction ? "//api.fuchijihua.com" : "//app.fuchijihua.com";
+
 // config var
 const outputDir = path.resolve(__dirname, './dist');
 

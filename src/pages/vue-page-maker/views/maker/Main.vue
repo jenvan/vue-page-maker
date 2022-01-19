@@ -534,7 +534,7 @@ export default {
                 let _h = current.getBoundingClientRect().height;
                 let _c = current.getAttribute("animate");
                 if (t - _h < _t && _t < t + h - 50) {
-                    current.classList.contains("animate__animated") && _c.split(" ").forEach((name) => {
+                    current.classList.contains("animate__animated") || _c.split(" ").forEach((name) => {
                         current.classList.add(name);
                     });
                 }

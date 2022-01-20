@@ -1,9 +1,10 @@
 <template>
-    <el-row :class="[$style.box]" type="flex">
-        <el-col v-for="(item,index) in formData.list" :key="index" :span="formData.column"  :style="{padding:formData.gutter / 16 + 'em'}">
-            <CellView :data="item"></CellView>
-        </el-col>
-    </el-row>
+    <div :class="[$style.box]">
+        <div v-for="(item,index) in formData.list" :key="index" :style="style">
+            <CellView :data="item" :style="{width:'100%', height:'100%'}"></CellView>
+        </div>
+        <div :class="[$style.bg]" :style="{backgroundColor: formData.bgcolor}"></div>
+    </div>
 </template>
 
 <script>
@@ -14,6 +15,12 @@ export default {
             default: () => ({})
         }
     },
+    computed: {
+        style() {
+            let column = this.formData.column || 2;
+            return {width: 100 / column + "%", minWidth: this.formData.width / 16 + 'em', height: this.formData.height / 16 + 'em',  padding: this.formData.gutter / 16 + 'em'};
+        }
+    }
 };
 </script>
 
@@ -21,11 +28,18 @@ export default {
 .box {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
+    align-items: flex-start;
     width: 100%;
     min-height: 50px;
     clear: both;
-    overflow: hidden;
+}
+.bg {
+    position: absolute;
+    z-index: -1;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    display: block;
 }
 </style>

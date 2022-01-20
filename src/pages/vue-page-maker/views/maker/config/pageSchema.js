@@ -61,7 +61,7 @@ export default {
                 title: '全局样式',
                 type: 'string',
                 'ui:options': {
-                    placeholder: '请输入 css 的 渐变色 样式, before 的 border 加灰色边框',
+                    placeholder: '请输入 css 代码',
                     type: 'textarea'
                 }
             },

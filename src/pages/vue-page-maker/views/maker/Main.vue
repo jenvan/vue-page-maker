@@ -12,7 +12,7 @@
                 v-model="scale"
                 :is-mobile="fakeMobile"
                 @onMenu="handleMenu"
-                @onPreview="(scale = 100) && (isPreview = true)"
+                @onPreview="handlePreview(true)"
                 @onUpdateDevice="(v) => {this.fakeMobile = v}"
                 @onImport="handleImport"
                 @onExport="handleExport"
@@ -23,7 +23,7 @@
                 type="success"
                 size="min"
                 style="position: fixed; top: 20%; right: 0px; z-index: 999999; padding: 10px;"
-                @click="isPreview = false"
+                @click="handlePreview(false)"
             >
                 结<br>束<br>预<br>览
             </el-button>
@@ -552,6 +552,11 @@ export default {
         },
 
         // EditorHeader 动作
+        handlePreview(isEnter) {
+            this.isPreview = isEnter;
+            this.scale = 100;
+            document.querySelector('#device').scrollTo(0, 0);
+        },
         handleMenu(command) {
             if (command == "new") {
                 this.$forward('new');

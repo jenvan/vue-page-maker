@@ -21,7 +21,7 @@
             <el-button
                 type="text"
                 style="width:36px;text-align:center;"
-                @click="emitUpdateScale(100)"
+                @click="emitUpdateScale(value == 100 ? 50 : 100)"
             >
                 {{ value }}%
             </el-button>

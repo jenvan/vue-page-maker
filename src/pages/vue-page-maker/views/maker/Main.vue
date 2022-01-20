@@ -375,7 +375,7 @@ export default {
         loadEditorData(action = "", id = "") {
 
             if (this.action == "" && this.id == "") {
-                action = /(192|siteimg)/.test(location.host) ? "edit" : "view";
+                action = /(127|192|siteimg)/.test(location.host) ? "edit" : "view";
                 id = "7a3cn10yozlk46gjqb9m532";
             }
 
@@ -537,6 +537,7 @@ export default {
                 let _t = current.getBoundingClientRect().top;
                 let _h = current.getBoundingClientRect().height;
                 let _c = current.getAttribute("animate");
+                if (!_c) return;
                 if (t - _h < _t && _t < t + h - 50) {
                     current.classList.contains("animate__animated") || _c.split(" ").forEach((name) => {
                         current.classList.add(name);

@@ -20,7 +20,7 @@ export default {
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 1,
-            maximum: 500
+            maximum: 1000
         },
         list: {
             title: "图文列表",

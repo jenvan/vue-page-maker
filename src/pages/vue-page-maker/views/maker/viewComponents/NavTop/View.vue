@@ -56,6 +56,12 @@ export default {
                 debounce(this.handleScroll, 500)();
             }
         });
+        document.querySelector("#nav-top .el-submenu .el-submenu__title").addEventListener("mouseover", function() {
+            this.nextElementSibling.style.display = "";
+        });
+        document.querySelector("#nav-top .el-submenu").addEventListener("mouseleave", function() {
+            this.querySelector(".el-menu").style.display = "none";
+        });
     },
     destroyed() {
         let obj = document.getElementById("nav-top");

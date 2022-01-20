@@ -59,9 +59,10 @@ export default {
         "bgcolor": {
             "title": "背景颜色",
             "type": "string",
-            "format": "color",
             "default": "",
             'ui:labelWidth': '100px',
+            'ui:widget': 'el-color-picker',
+            'ui:options': {'show-alpha': true}
         },
         "fgcolor": {
             "title": "文字颜色",

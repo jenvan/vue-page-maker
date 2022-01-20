@@ -34,7 +34,7 @@ Vue.prototype.$host = process.env.NODE_ENV === "production" ? "//api.fuchijihua.
 Vue.prototype.$http = http;
 http.defaults.baseURL = Vue.prototype.$host + "/maker";
 
-Vue.prototype.$forward = function forward(action, id) {
+Vue.prototype.$forward = function(action, id) {
     return router.push(action + (id && id.length > 0 ? "?id=" + id : ""));
 }
 Vue.prototype.$redirect = function(link) {
@@ -44,6 +44,6 @@ Vue.prototype.$redirect = function(link) {
     if (link.substring(0, 4) == "http")
         return window.open(link, "_blank");
     if (/^[\w]{20,}$/.test(link))
-        return forward("", link);
+        return this.$forward("", link);
     return router.push(link);
 };

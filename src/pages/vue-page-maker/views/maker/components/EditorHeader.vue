@@ -118,7 +118,7 @@ export default {
         handlePreview() {
             let w = document.querySelector("#device").clientWidth;
             let h = document.querySelector("#device").clientHeight;
-            this.$message("窗口尺寸：" + w + "px * " + h + "px");
+            console.log("窗口尺寸：" + w + "px * " + h + "px");
             this.$emit('onPreview');
         }
     }

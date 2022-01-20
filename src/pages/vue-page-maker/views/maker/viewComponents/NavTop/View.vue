@@ -15,7 +15,7 @@
                         </el-menu-item>
                         <el-submenu v-else :index="index.toString()">
                             <template slot="title">{{item.self.text}}</template>
-                            <el-menu-item v-for="(v,k) in item.children" :key="k" :index="index + '-' + k">-&nbsp;&nbsp;{{v.text}}&nbsp;&nbsp;-</el-menu-item>
+                            <el-menu-item v-for="(v,k) in item.children" :key="k" :index="index + '-' + k">{{v.text}}</el-menu-item>
                         </el-submenu>
                     </span>
                 </el-menu>
@@ -52,7 +52,7 @@ export default {
         setTimeout(this.handleScroll, 300);
         document.querySelector("#device").addEventListener("scroll", () => {
             if (document.getElementById("nav-top")){
-                document.getElementById("nav-top").style.opacity = 0;
+                //document.getElementById("nav-top").style.opacity = 0;
                 debounce(this.handleScroll, 500)();
             }
         });
@@ -112,7 +112,7 @@ export default {
 
             this.handleMenu(!this.inMobile);
 
-            document.getElementById("nav-top").style.opacity = 1;
+            //document.getElementById("nav-top").style.opacity = 1;
         },
         handleMore() {
             this.handleMenu(!this.popupMenu);
@@ -202,9 +202,12 @@ export default {
             background: #FFF !important;
             color: #000 !important;
         }
+        .el-submenu .el-menu-item {
+            background: #F6F6F6 !important;
+        }
     }
     &.mobile {
-        :global li[role='menuitem'] {
+        :global span {
             background: #000 !important;
             color: #FFF !important;
         }

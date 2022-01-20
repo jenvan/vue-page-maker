@@ -59,7 +59,7 @@ export default {
     },
     destroyed() {
         let obj = document.getElementById("nav-top");
-        obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
+        obj && obj.parentElement && obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
     },
     watch: {
         zoom () {

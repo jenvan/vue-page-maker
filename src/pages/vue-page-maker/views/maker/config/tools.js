@@ -90,6 +90,16 @@ const tools = [
     {
         groupName: '商品类',
         componentList: [{
+            title: '单个商品',
+            maxNum: 10,
+            icon: 'el-icon-picture',
+            componentPack: componentPackGoodsAlone
+        },{
+            title: '多个商品',
+            maxNum: 5,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackGoodsRecommend
+        }, /*{
             title: '商品列表',
             maxNum: 1,
             icon: 'el-icon-s-goods',
@@ -99,21 +109,11 @@ const tools = [
                 unRemove: true
             }
         }, {
-            title: '推荐商品',
-            maxNum: 5,
-            icon: 'el-icon-s-goods',
-            componentPack: componentPackGoodsRecommend
-        }, {
-            title: '单个商品',
-            maxNum: 10,
-            icon: 'el-icon-picture',
-            componentPack: componentPackGoodsAlone
-        }, {
             title: '分类推荐',
             maxNum: 5,
             icon: 'el-icon-s-grid',
             componentPack: componentPackGoodsCategory
-        }]
+        }*/]
     },
     {
         groupName: '营销互动类',
@@ -152,7 +152,7 @@ const tools = [
             maxNum: 1,
             icon: 'el-icon-s-goods',
             componentPack: componentPackNavGrid
-        }, {
+        }, /*{
             title: '浮动导航',
             maxNum: 3,
             icon: 'el-icon-s-goods',
@@ -160,7 +160,7 @@ const tools = [
             additional: {
                 unRemove: true
             }
-        }]
+        }*/]
     }
 ];
 

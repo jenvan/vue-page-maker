@@ -372,9 +372,11 @@ export default {
         }
     },
     methods: {
-        async loadEditorData(action = "", id = "") {
-            if (action != this.action || id != this.id) {
-                return this.$router.push(action + (id.length > 0 ? "?id=" + id : ""));
+        loadEditorData(action = "", id = "") {
+
+            if (this.action == "" && this.id == "") {
+                action = /(192|siteimg)/.test(location.host) ? "edit" : "view";
+                id = "7a3cn10yozlk46gjqb9m532";
             }
 
             if (id && id.length > 16){
@@ -399,8 +401,10 @@ export default {
             }
             
             document.title = "页面编辑器 - VUE PAGE MAKER";
-            this.pageConfig = defaultConfig.page;
-            this.compConfig = defaultConfig.component;
+            this.pageConfig = {};
+            this.compConfig = [];
+            //this.pageConfig = defaultConfig.page;
+            //this.compConfig = defaultConfig.component;
             this.isPreview = false;
             this.loading = false;
         },
@@ -549,7 +553,7 @@ export default {
         // EditorHeader 动作
         handleMenu(command) {
             if (command == "new") {
-                this.loadEditorData('new');
+                this.$forward('new');
             }
             if (command == "page") {
                 this.$http.post("get").then((data) => {
@@ -566,12 +570,12 @@ export default {
                         componentListeners: {
                             onForward: (action, id) => {
                                 instance.close();
-                                this.loadEditorData(action, id);
+                                this.$forward(action, id);
                             },
                             onRemove: (id) => {
                                 this.$http.get("set?id=" + id).then(() => {
                                     instance.close();
-                                    this.loadEditorData('new');
+                                    this.$forward('new');
                                     setTimeout(() => {
                                         this.handleMenu("page");
                                     }, 300)
@@ -638,7 +642,7 @@ export default {
             let data = {page: this.pageConfig, component: this.compConfig};
             this.$http.post("/set?id=" + this.id + "&name=config", {content: JSON.stringify(data)}).then((data) => {
                 this.$message({type:"success", message:"发布成功", duration: 2000});
-                this.action != "edit" && this.loadEditorData("edit", data.id);
+                this.action != "edit" && this.$forward("edit", data.id);
             });
         },
 

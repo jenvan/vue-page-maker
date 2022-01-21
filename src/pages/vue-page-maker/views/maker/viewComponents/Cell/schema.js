@@ -3,13 +3,13 @@ import { makeTextItem, makeImageItem, makeAnimateItem, makeStyleItem, makeCellIt
 export default {
     $schema: 'http://json-schema.org/draft-07/schema#',
     id: 'Cell',
-    title: '图文单元格组件',
+    title: '图文混排单元格组件',
     description: '用于在页面配置一个图文混排的卡片',
     type: 'object',
     required: [],
     properties: {
         bgcolor: {
-            title: "单元格背景",
+            title: "组件背景",
             type: "string",
             default: "",
             "ui:labelWidth": "100px",

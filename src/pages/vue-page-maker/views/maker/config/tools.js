@@ -82,7 +82,7 @@ const tools = [
             componentPack: componentPackCell
         }, {
             title: '图文组合列表',
-            maxNum: 5,
+            maxNum: 10,
             icon: 'el-icon-notebook-1',
             componentPack: componentPackCellList
         }, ]

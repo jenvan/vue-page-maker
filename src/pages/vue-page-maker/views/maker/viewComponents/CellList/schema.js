@@ -3,11 +3,21 @@ import { makeTextItem, makeImageItem, makeAnimateItem, makeStyleItem, makeCellIt
 export default {
     $schema: 'http://json-schema.org/draft-07/schema#',
     id: 'CellList',
-    title: '图文单元格列表组件',
+    title: '图文混排单元格列表组件',
     description: '用于在页面配置一组图文混排的卡片',
     type: 'object',
     required: [],
     properties: {
+        bgcolor: {
+            title: "组件背景",
+            type: "string",
+            default: "",
+            "ui:labelWidth": "100px",
+            "ui:widget": "el-color-picker",
+        },        
+        title: {
+            ...makeTextItem({ title: '列表标题' })
+        },
         column: {
             title: "每行单元格数",
             description: "受屏幕分辨率和单元格最小宽度影响",
@@ -29,7 +39,7 @@ export default {
             maximum: 1000
         },
         height: {
-            title: "单元格高度",
+            title: "单元格最小高度",
             type: "number",
             default: 160,
             "ui:widget": "ElSlider",
@@ -46,21 +56,14 @@ export default {
             minimum: 0,
             maximum: 50
         },
-        bgcolor: {
-            title: "背景颜色",
-            type: "string",
-            default: "",
-            "ui:labelWidth": "100px",
-            "ui:widget": "el-color-picker",
-        },
         list: {
-            title: "",
+            title: "单元格列表",
             type: "array",
             items: {
                 ...makeCellItem()
             },
             minItems: 1,
-            maxItems: 10,
+            maxItems: 12,
             uniqueItems: false,
             "ui:options": {
                 "showIndexNumber": true

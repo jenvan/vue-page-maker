@@ -3,11 +3,18 @@ import { makeTextItem, makeImageItem, makeAnimateItem, makeStyleItem, makeCellIt
 export default {
     $schema: 'http://json-schema.org/draft-07/schema#',
     id: 'Carousel',
-    title: '图文跑马灯',
+    title: '图文轮播',
     description: '用于在页面配置一组图文跑马灯',
     type: 'object',
     required: [],
     properties: {
+        bgcolor: {
+            title: "组件背景",
+            type: "string",
+            default: "",
+            "ui:labelWidth": "100px",
+            "ui:widget": "el-color-picker",
+        },
         isCard: {
             title: "卡片形式",
             type: "boolean",
@@ -21,13 +28,6 @@ export default {
             multipleOf: 1,
             minimum: 1,
             maximum: 1000
-        },
-        bgcolor: {
-            title: "背景颜色",
-            type: "string",
-            default: "",
-            "ui:labelWidth": "100px",
-            "ui:widget": "el-color-picker",
         },
         list: {
             title: "图文列表",
@@ -45,7 +45,7 @@ export default {
                 }
             },
             minItems: 2,
-            maxItems: 6,
+            maxItems: 10,
             uniqueItems: true,
             "ui:options": {
                 "showIndexNumber": true

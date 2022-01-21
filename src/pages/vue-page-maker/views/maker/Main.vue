@@ -401,10 +401,8 @@ export default {
             }
             
             document.title = "页面编辑器 - VUE PAGE MAKER";
-            this.pageConfig = {};
-            this.compConfig = [];
-            //this.pageConfig = defaultConfig.page;
-            //this.compConfig = defaultConfig.component;
+            this.pageConfig = this.action == "demo" ? defaultConfig.page : {};
+            this.compConfig = this.action == "demo" ? defaultConfig.component : [];
             this.isPreview = false;
             this.loading = false;
         },
@@ -936,24 +934,23 @@ export default {
     }
     .contentHead {
         position: absolute;
-        z-index: 0;
+        z-index: -9;
         top: 0;
         width: 100%;
         &::after {
-            content: attr(data);
+            content: '';
             position: absolute;
-            z-index: 2;
+            z-index: -9;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            content: '';
             background: linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 0.3) 70%, rgba(255,255,255, 0.7) 100%);
         }
     }
     .contentHeadArc {
         position: absolute;
-        z-index: 1;
+        z-index: -99;
         left: 0;
         bottom: 0;
         width: 100%;
@@ -964,7 +961,7 @@ export default {
         &::before, &::after {
             content: '';
             position: absolute;
-            z-index: -1;
+            z-index: -99;
             left: -20%;
             width: 140%;
             height: 100%;

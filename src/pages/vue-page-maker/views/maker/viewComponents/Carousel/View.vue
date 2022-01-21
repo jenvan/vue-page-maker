@@ -1,5 +1,6 @@
 <template>
     <div :class="$style.box">
+        <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
         <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :height="formData.height / 16 + 'em'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
             <el-carousel-item v-for="(item,index) in formData.list" :key="index" :class="$style.item" :label="getLabel(item.label)">
                 <div v-show="showText && !formData.isCard" :class="{[$style.summary]: true}">
@@ -10,7 +11,6 @@
             </el-carousel-item>
         </el-carousel>
         <TextView v-show="showText && formData.isCard" :class="[$style.text]" :data="text"></TextView>
-        <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
     </div>
 </template>
 
@@ -48,6 +48,16 @@ export default {
     width: 100%;
     background: transparent;
     margin-bottom: 10px;
+}
+.bg {
+    position: absolute;
+    z-index: -1;
+    left: -50%;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    background: transparent;
+    display: block;
 }
 .carousel {
     width: 100%;
@@ -106,15 +116,5 @@ export default {
     margin: 0 auto;
     padding: 1em;
     overflow: auto;
-}
-.bg {
-    position: absolute;
-    z-index: 0;
-    left: -50%;
-    top: 0;
-    width: 200%;
-    height: 100%;
-    background: transparent;
-    display: block;
 }
 </style>

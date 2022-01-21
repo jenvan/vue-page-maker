@@ -9,11 +9,14 @@ export default {
     required: [],
     properties: {
         bgcolor: {
-            title: "模块背景颜色",
+            title: "单元格背景",
             type: "string",
             default: "",
             "ui:labelWidth": "100px",
             "ui:widget": "el-color-picker",
+        },
+        title: {
+            ...makeTextItem({ title: '单元格标题' })
         },
         cell: {
             ...makeCellItem({title:"单元格内容"})

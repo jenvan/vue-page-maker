@@ -38,6 +38,7 @@ export default {
     position: absolute;
     z-index: -1;
     left: -50%;
+    top: 0;
     width: 200%;
     height: 100%;
     display: block;

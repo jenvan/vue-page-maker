@@ -162,6 +162,12 @@ export default {
 .logo {
     float: left;
     max-height: 80%;
+    :global {
+        .el-image__inner {
+            width: auto;
+            height: 100%;
+        }
+    }
 }
 .bar {
     display: flex;

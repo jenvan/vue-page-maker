@@ -259,7 +259,12 @@ export default {
     },
 
     created() {
-        window.addEventListener("resize", this.handleResize, true);
+        window.addEventListener("resize", () => {
+            this.handleResize();
+            let e = document.createEvent("UIEvents");
+            e.initUIEvent("scroll", true, false, window, 0);
+            document.querySelector('#device').dispatchEvent(e);
+        }, true);
         window.addEventListener("scroll", debounce(this.handleScroll, 300), true);
         this.loadEditorData(this.action, this.id);
     },

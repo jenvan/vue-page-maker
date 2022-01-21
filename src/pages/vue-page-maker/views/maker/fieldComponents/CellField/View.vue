@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.row" :style="{flexDirection: data.direction, ...style[1]}">
-        <div v-if="hasImage" :class="$style.item" :style="{padding: '1em', ...size[0]}">
+        <div v-if="hasImage" :class="$style.item" :style="{padding: style[0], ...size[0]}">
             <ImageView :data="data.image" :animate="data.animate"></ImageView>
         </div>
         <div v-if="hasText" :class="{[$style.item]: true, [$style.link]: hasLink}" :style="{padding: style[0], ...size[1]}" @click="handleClick">

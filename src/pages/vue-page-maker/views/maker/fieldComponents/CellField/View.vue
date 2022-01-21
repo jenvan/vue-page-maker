@@ -8,6 +8,7 @@
             <TextView :data="data.text2"></TextView>
             <TextView :data="data.text3"></TextView>
         </div>
+        <slot name="extra"></slot>
     </div>
 </template>
 

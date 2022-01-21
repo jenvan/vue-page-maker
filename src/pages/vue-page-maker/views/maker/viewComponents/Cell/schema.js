@@ -8,8 +8,15 @@ export default {
     type: 'object',
     required: [],
     properties: {
+        bgcolor: {
+            title: "模块背景颜色",
+            type: "string",
+            default: "",
+            "ui:labelWidth": "100px",
+            "ui:widget": "el-color-picker",
+        },
         cell: {
-            ...makeCellItem({title:""})
+            ...makeCellItem({title:"单元格内容"})
         },
     }
 };

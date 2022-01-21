@@ -19,7 +19,8 @@ export default {
     computed: {
         style() {
             let column = this.formData.column || 2;
-            return {width: 100 / column + "%", minWidth: this.formData.width / 16 + 'em', minHeight: this.formData.height / 16 + 'em',  padding: this.formData.gutter / 16 + 'em'};
+            let gutter = this.formData.gutter / 16 + 'em';
+            return {width: 'calc( (100% - 2 * ' + column + '*' + gutter + ') / ' + column + ')', minWidth: this.formData.width / 16 + 'em', minHeight: this.formData.height / 16 + 'em', margin: gutter};
         }
     }
 };
@@ -41,6 +42,7 @@ export default {
     display: block;
 }
 .list {
+    box-sizing: border-box;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;

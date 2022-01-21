@@ -22,6 +22,13 @@ export default {
             minimum: 1,
             maximum: 1000
         },
+        bgcolor: {
+            title: "背景颜色",
+            type: "string",
+            default: "",
+            "ui:labelWidth": "100px",
+            "ui:widget": "el-color-picker",
+        },
         list: {
             title: "图文列表",
             type: "array",

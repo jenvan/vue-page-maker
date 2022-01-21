@@ -10,6 +10,7 @@
             </el-carousel-item>
         </el-carousel>
         <TextView v-show="showText && formData.isCard" :class="[$style.text]" :data="text"></TextView>
+        <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
     </div>
 </template>
 
@@ -105,5 +106,15 @@ export default {
     margin: 0 auto;
     padding: 1em;
     overflow: auto;
+}
+.bg {
+    position: absolute;
+    z-index: 0;
+    left: -50%;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    background: transparent;
+    display: block;
 }
 </style>

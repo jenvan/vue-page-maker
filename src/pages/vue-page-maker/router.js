@@ -5,10 +5,10 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/:action(demo|view|edit|new)?',
+        path: '/:action(view|edit|new)?',
         name: 'maker',
         component: () => import('./views/maker/Main.vue'),
-        props: route => ({ action: route.params.action, id: route.query.id }),
+        props: route => ({ action: route.params.action, id: route.query.id, name: route.query.name }),
     },
     {
         path: '*',

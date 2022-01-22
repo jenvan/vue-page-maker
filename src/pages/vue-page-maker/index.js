@@ -34,8 +34,15 @@ Vue.prototype.$host = process.env.NODE_ENV === "production" ? "//api.fuchijihua.
 Vue.prototype.$http = http;
 http.defaults.baseURL = Vue.prototype.$host + "/maker";
 
-Vue.prototype.$forward = function(action, id) {
-    return router.push(action + (id && id.length > 0 ? "?id=" + id : ""));
+Vue.prototype.$forward = function(action, id, name) {
+    let path = action;
+    if (id && id.length > 0) {
+        path += "?id=" + id;
+    }
+    if (name && name.length > 0){
+        path += (path.indexOf("?") > -1 ? "&" : "?") + "name=" + name;
+    }
+    return router.push(path);
 }
 Vue.prototype.$redirect = function(link) {
     if (typeof link != "string" || link.length == 0 || document.querySelector(".editMode") != null)
@@ -45,5 +52,7 @@ Vue.prototype.$redirect = function(link) {
         return window.open(link, "_blank");
     if (/^[\w]{20,}$/.test(link))
         return this.$forward("", link);
+    if (/^[\w]{,10}$/.test(link))
+        return this.$forward("", "", link);
     return router.push(link);
 };

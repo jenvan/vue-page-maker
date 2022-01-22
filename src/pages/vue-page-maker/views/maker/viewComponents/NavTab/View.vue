@@ -32,10 +32,6 @@ export default {
         setTimeout(this.handleScroll, 300);
         document.querySelector("#device").addEventListener("scroll", this.handleScroll);
     },
-    destroyed() {
-        let obj = document.getElementById("nav-tab");
-        obj && obj.parentElement && obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
-    },
     watch: {
         zoom () {
             this.handleScroll();

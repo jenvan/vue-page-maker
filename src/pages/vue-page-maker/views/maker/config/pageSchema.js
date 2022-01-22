@@ -17,6 +17,16 @@ export default {
                 type: 'string',
                 default: ''
             },
+            name: {
+                title: '页面名称',
+                type: 'string',
+                default: ''
+            },
+            template: {
+                title: '页面模板（要包含的其他子页面的名称）',
+                type: 'string',
+                default: ''
+            },
             width: {
                 title: '页面宽度',
                 type: 'string',
@@ -55,15 +65,6 @@ export default {
             hstyle: {
                 ...makeImageItem({title: "页头背景", isBackground: true}),
                 ...{properties: {backgroundColor: {default: ''}}},
-            },
-
-            gstyle: {
-                title: '全局样式',
-                type: 'string',
-                'ui:options': {
-                    placeholder: '请输入 css 代码',
-                    type: 'textarea'
-                }
             },
         }
     },

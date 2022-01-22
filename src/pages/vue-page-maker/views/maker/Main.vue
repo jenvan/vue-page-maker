@@ -111,6 +111,15 @@
                             >
                             </VueElementForm>
                         </div>
+
+                        <el-dropdown v-show="action == 'edit'" :class="$style.subpage" split-button @click="handleCommand('+')" @command="handleCommand">
+                            新建子页面
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item v-for="(v, k) in subpage" :key="k" :command="k" :icon="k == name ? 'el-icon-star-on' : 'el-icon-star-off'" :title="v.page.title">{{k}}</el-dropdown-item>
+                                <el-dropdown-item command="-" icon="el-icon-delete" divided>删除当前子页面：{{name}}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -129,7 +138,7 @@
                         <div :class="[$style.contentHeadArc, $style[pageConfig['heffect']]]"></div>
                     </div>
 
-                    <div :class="$style.contentBody" :style="{
+                    <div :class="[$style.contentBody, 'content']" :style="{
                         width: pageConfig['width'],
                         maxWidth: (pageConfig['mwidth'] || '1180px'),
                         minHeight: '100%',
@@ -229,7 +238,11 @@ export default {
         id: {
             type: String,
             default: "",
-        }
+        },
+        name: {
+            type: String,
+            default: "index",
+        },
     },
     data() {
         return {
@@ -253,6 +266,8 @@ export default {
             pageSchema,
             pageConfigDefault: null, // 原始值
             pageConfigDynamic: {},   // 设置值
+
+            subpage: {}, // 子页面集合 {名称:标题}
 
             tabName: 'pageTab',
         };
@@ -351,6 +366,10 @@ export default {
     watch: {
         $route: function(newVal, oldVal) {
             if (newVal != oldVal) {
+                let obj1 = document.getElementById("nav-top");
+                obj1 && obj1.parentElement && obj1.parentElement.id == "page" && document.getElementById("page").removeChild(obj1);
+                let obj2 = document.getElementById("nav-tab");
+                obj2 && obj2.parentElement && obj2.parentElement.id == "page" && document.getElementById("page").removeChild(obj2);
                 this.loadEditorData(this.action, this.id);
             }
         },
@@ -385,8 +404,28 @@ export default {
             }
 
             if (id && id.length > 16){
-                return this.$http.post("/get?id=" + id + "&name=config").then((data) => {
-                    const {page, component} = data;
+                return this.$http.post("/get?id=" + id).then((data) => {
+                    this.subpage = {};
+                    let name = "";
+                    for (let i in data.files) {
+                        try {
+                            let item = JSON.parse(data.files[i]["content"]);
+                            name = item["page"]["name"] ? item["page"]["name"] : i;
+                            this.subpage[name] = item;
+                        }
+                        catch(e) {
+                            console.warn("子页面配置错误", i + "：" + data.files[i]["content"]);
+                        }
+                    }
+
+                    if (typeof this.subpage[this.name] == "undefined") {
+                        if (typeof this.subpage["index"] != "undefined") name = "index";
+                        if (typeof this.subpage["config"] != "undefined") name = "config";
+                        console.error("!!! 指定子页面 " + this.name + " 不存在，跳转到默认页面 " + name + " >>>");
+                        return this.$forward(this.action, this.id, name);
+                    }
+                    
+                    const {page, component} = this.subpage[this.name];
                     this.pageConfig = page;
                     this.compConfig = component;
                     document.title = this.pageConfig["title"];
@@ -406,8 +445,8 @@ export default {
             }
             
             document.title = "页面编辑器 - VUE PAGE MAKER";
-            this.pageConfig = this.action == "demo" ? defaultConfig.page : {};
-            this.compConfig = this.action == "demo" ? defaultConfig.component : [];
+            this.pageConfig = this.id == "demo" ? defaultConfig.page : {};
+            this.compConfig = this.id == "demo" ? defaultConfig.component : [];
             this.isPreview = false;
             this.loading = false;
         },
@@ -648,17 +687,22 @@ export default {
         },
         handlePublish() {
             console.log(this.compConfig, this.pageConfig);
+
+            let name = this.pageConfig["name"];
+            if (!/^[\w]{1,10}$/.test(name)) {
+                return this.$alert("长度为1到10的字符或数字组合", "页面名称不合要求");
+            }
+
             let data = {page: this.pageConfig, component: this.compConfig};
-            this.$http.post("/set?id=" + this.id + "&name=config", {content: JSON.stringify(data)}).then((data) => {
+            this.$http.post("/set?id=" + this.id + "&name=" + name, {content: JSON.stringify(data)}).then((result) => {
                 this.$message({type:"success", message:"发布成功", duration: 2000});
-                this.action != "edit" && this.$forward("edit", data.id);
+                if (this.action != "edit" || this.name != name) {
+                    this.$forward("edit", result.id, name);
+                }
             });
         },
 
         // Form 动作
-        handleFormChange() {
-            
-        },
         handleItemOperate({ item, command }) {
             const strategyMap = {
                 moveUp(target, arrayItem) {
@@ -692,6 +736,9 @@ export default {
                 this.$message.error(`系统错误 - 未知的操作：[${command}]`);
             }
         },
+        handleFormChange() {
+            
+        },
         handleFormCanel() {
             this.activeTab = 'pageTab';
             this.editComp.isEdit = false;
@@ -712,6 +759,31 @@ export default {
         },
         handlePageSubmit() {
             console.info("Page config:", this.pageConfig);
+        },
+
+        handleCommand(what) {
+            if (what == "+") {
+                if (this.action == "new") {
+                    return this.$message("请将“新页面”先发布，再来增加子页面");
+                }
+                this.pageConfig.name = "";
+                this.pageConfig.title = "";
+                this.compConfig = {};
+                return;
+            }
+            if (what == "-") {
+                if (Object.keys(this.subpage).length == 1) {
+                    this.$alert("如需删除主页面，请在左上角菜单“我的页面”列表中操作", "每个页面必须保留一个子页面");
+                    return;
+                }
+                this.$http.post("/set?id=" + this.id + "&name=" + this.name).then((result) => {
+                    this.$forward("edit", this.id);
+                });
+                return;
+            }
+            if (what != this.name) {
+                this.$forward(this.action, this.id, what);
+            }
         },
 
         // 拖拽动作（新加元素需要做特殊处理）
@@ -889,6 +961,12 @@ export default {
             width: 0;
             height: 0;
         }
+    }
+    .subpage {
+        position: fixed;
+        z-index: 6;
+        bottom: 12px;
+        right: 90px;
     }
     .close {
         cursor: pointer;

@@ -40,6 +40,9 @@ import componentPackNavTop from '../viewComponents/NavTop';
 // 底部导航
 import componentPackNavTab from '../viewComponents/NavTab';
 
+// 底部模板
+import componentPackBottom from '../viewComponents/Cell';
+
 // 宫格导航
 import componentPackNavGrid from '../viewComponents/NavGrid';
 
@@ -57,12 +60,12 @@ const tools = [
         groupName: '图文类',
         componentList: [{
             title: '纯文本',
-            maxNum: 20,
+            maxNum: 100,
             icon: 'el-icon-notebook-1',
             componentPack: componentPackText
         }, {
             title: '纯图片',
-            maxNum: 20,
+            maxNum: 100,
             icon: 'el-icon-notebook-1',
             componentPack: componentPackImage
         }, {
@@ -72,17 +75,17 @@ const tools = [
             componentPack: componentPackImageWall
         }, {
             title: '图文轮播',
-            maxNum: 2,
+            maxNum: 5,
             icon: 'el-icon-picture',
             componentPack: componentPackCarousel
         }, {
             title: '图文组合',
-            maxNum: 10,
+            maxNum: 20,
             icon: 'el-icon-notebook-1',
             componentPack: componentPackCell
         }, {
             title: '图文组合列表',
-            maxNum: 10,
+            maxNum: 20,
             icon: 'el-icon-notebook-1',
             componentPack: componentPackCellList
         }, ]
@@ -139,8 +142,16 @@ const tools = [
             additional: {
                 topDisplay: true,
             }
-        },{
+        }, {
             title: '底部导航',
+            maxNum: 1,
+            icon: 'el-icon-s-goods',
+            componentPack: componentPackNavTab,
+            additional: {
+                bottomDisplay: true,
+            }
+        }, {
+            title: '底部模板',
             maxNum: 1,
             icon: 'el-icon-s-goods',
             componentPack: componentPackNavTab,

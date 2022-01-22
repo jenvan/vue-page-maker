@@ -1,24 +1,27 @@
 <template>
     <div id="nav-top-wrap" :class="$style.box" :style="{height: formData.height / 16 + 'em'}">
         <div id="nav-top" :class="$style.nav" :style="{background: bgColor, color: fgColor, height: formData.height / 16 + 'em'}">
-            
-            <ImageView :class="$style.logo" :data="formData.logo" :lazy="false"></ImageView>
+            <div :class="[$style.wrap, 'wrap']">
 
-            <div :class="$style.bar">
+                <ImageView :class="$style.logo" :data="formData.logo" :lazy="false"></ImageView>
 
-                <div :class="[$style.more , 'el-icon-menu']" :style="{display: moreDisplay}" @click="handleMore"></div>
+                <div :class="$style.bar">
 
-                <el-menu ref="nav" :class="{[$style.menu]: true, [$style.mobile]: inMobile}" :style="{display: menuDisplay}" :background-color="bgColor" :text-color="fgColor" :active-text-color="fgColor" @select="handleSelect" @open="handleOpen">
-                    <span v-for="(item, index) in formData.list" :key="index">
-                        <el-menu-item v-if="item.children.length == 0" :index="index.toString()">
-                            {{item.self.text}}
-                        </el-menu-item>
-                        <el-submenu v-else :index="index.toString()">
-                            <template slot="title">{{item.self.text}}</template>
-                            <el-menu-item v-for="(v,k) in item.children" :key="k" :index="index + '-' + k">{{v.text}}</el-menu-item>
-                        </el-submenu>
-                    </span>
-                </el-menu>
+                    <div :class="[$style.more , 'el-icon-menu']" :style="{display: moreDisplay}" @click="handleMore"></div>
+
+                    <el-menu ref="nav" :class="{[$style.menu]: true, [$style.mobile]: inMobile}" :style="{display: menuDisplay}" :background-color="bgColor" :text-color="fgColor" :active-text-color="fgColor" @select="handleSelect" @open="handleOpen">
+                        <span v-for="(item, index) in formData.list" :key="index">
+                            <el-menu-item v-if="item.children.length == 0" :index="index.toString()">
+                                {{item.self.text}}
+                            </el-menu-item>
+                            <el-submenu v-else :index="index.toString()">
+                                <template slot="title">{{item.self.text}}</template>
+                                <el-menu-item v-for="(v,k) in item.children" :key="k" :index="index + '-' + k">{{v.text}}</el-menu-item>
+                            </el-submenu>
+                        </span>
+                    </el-menu>
+
+                </div>
 
             </div>
         </div>
@@ -63,10 +66,6 @@ export default {
             this.querySelector(".el-menu").style.display = "none";
         });
     },
-    destroyed() {
-        let obj = document.getElementById("nav-top");
-        obj && obj.parentElement && obj.parentElement.id == "page" && document.getElementById("page").removeChild(obj);
-    },
     watch: {
         zoom () {
             this.handleScroll();
@@ -85,11 +84,13 @@ export default {
             let device = document.getElementById("device");
             let m = device.scrollTop || 0;
 
-            if (m >= 50){
+            if (m > 0){
                 obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
                 obj.style.zoom = this.zoom;
                 obj.style.top = device.getBoundingClientRect().top / this.zoom + "px";
                 obj.style.left = device.getBoundingClientRect().left / this.zoom + "px";
+                obj.style.left = "auto";
+                obj.style.right = "auto";
             }
             else {
                 document.getElementById("nav-top-wrap").appendChild(obj);
@@ -98,6 +99,7 @@ export default {
                 obj.style.left = 0;
             }
             obj.style.width = device.clientWidth + "px";
+            obj.querySelector(".wrap").style.width = device.querySelector(".content").clientWidth + "px";
 
             this.inMobile = device.clientWidth < 1024;
 
@@ -145,19 +147,24 @@ export default {
     display: block;
 }
 .nav {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
     position: fixed;
     z-index: 6;
     width: 100%;
     min-height: 30px;
     max-height: 200px;
-    padding: 0 1em;
     box-shadow: 0 2px 8px 0px #EEE;
     transition: opacity .5s ease;
     clear: both;
+    .wrap {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        background: transparent;
+    }
 }
 .logo {
     float: left;
@@ -172,7 +179,7 @@ export default {
 .bar {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
     width: 60%;
     max-width: 800px;

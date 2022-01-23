@@ -40,9 +40,6 @@ import componentPackNavTop from '../viewComponents/NavTop';
 // 底部导航
 import componentPackNavTab from '../viewComponents/NavTab';
 
-// 底部模板
-import componentPackBottom from '../viewComponents/Cell';
-
 // 宫格导航
 import componentPackNavGrid from '../viewComponents/NavGrid';
 
@@ -144,14 +141,6 @@ const tools = [
             }
         }, {
             title: '底部导航',
-            maxNum: 1,
-            icon: 'el-icon-s-goods',
-            componentPack: componentPackNavTab,
-            additional: {
-                bottomDisplay: true,
-            }
-        }, {
-            title: '底部模板',
             maxNum: 1,
             icon: 'el-icon-s-goods',
             componentPack: componentPackNavTab,

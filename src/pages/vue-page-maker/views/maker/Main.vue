@@ -114,9 +114,10 @@
 
                         <el-dropdown v-show="action == 'edit'" :class="$style.subpage" split-button @click="handleCommand('+')" @command="handleCommand">
                             新建子页面
-                            <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-menu v-if="Object.keys(subpage).length > 1" slot="dropdown">
+                                <el-dropdown-item icon="el-icon-arrow-down" disabled>子页面列表：</el-dropdown-item>
                                 <el-dropdown-item v-for="(v, k) in subpage" :key="k" :command="k" :icon="k == name ? 'el-icon-star-on' : 'el-icon-star-off'" :title="v.page.title">{{k}}</el-dropdown-item>
-                                <el-dropdown-item command="-" icon="el-icon-delete" divided>删除当前子页面：{{name}}</el-dropdown-item>
+                                <el-dropdown-item divided command="-" icon="el-icon-delete">删除当前子页面：{{name}}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
 
@@ -261,6 +262,7 @@ export default {
             editComponentList: [],
             editHeaderComponentList: [],
             editFooterComponentList: [],
+            editTemplateComponentList: [],
             editComp: {},
 
             pageSchema,
@@ -301,7 +303,7 @@ export default {
         },
         compConfig: {
             get() {
-                return JSON.parse(JSON.stringify(vm2Api(this.trueComponentList)));
+                return JSON.parse(JSON.stringify(vm2Api([].concat(this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList))));
             },
             set(value) {
                 this.initEditorData(value);
@@ -345,7 +347,7 @@ export default {
 
         // 头部、中间、底部各个list集合
         componentListGroup() {
-            return [this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList];
+            return [this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList, this.editTemplateComponentList];
         },
 
         // 真实使用的组件 - 包含顶部、底部、不可拖动的模块平铺
@@ -424,6 +426,8 @@ export default {
                         console.error("!!! 指定子页面 " + this.name + " 不存在，跳转到默认页面 " + name + " >>>");
                         return this.$forward(this.action, this.id, name);
                     }
+
+                    this.initEditorTemplate(this.subpage[this.name]["page"]["template"]);
                     
                     const {page, component} = this.subpage[this.name];
                     this.pageConfig = page;
@@ -451,19 +455,18 @@ export default {
             this.loading = false;
         },
         initEditorData(data) {
-            const dataList = api2VmToolItem(toolList, data);
-
             // 初始数据
             this.editComponentList = [];
             this.editHeaderComponentList = [];
             this.editFooterComponentList = [];
 
+            // 转换数据
+            const dataList = api2VmToolItem(toolList, data);
+
             // 重新插入数据
             dataList.forEach((toolItemData) => {
                 if (!toolItemData.componentPack) {
-                    console.warn('存在一条异常数据，请检查：');
-                    console.log(dataList);
-                    return;
+                    return console.warn('组件存在一条异常数据，请检查：', dataList, toolItemData);
                 }
                 const editorData = generateEditorItem(toolItemData);
                 // 模拟拖入组件插入数据
@@ -472,6 +475,21 @@ export default {
                     // 新加的元素处理特殊配置信息
                     this.additionalStrategy(editorData.additional, editorData);
                 }
+            });
+        },
+        initEditorTemplate(name){
+            this.editTemplateComponentList = [];
+            if (typeof name != "string" || !/^\w+$/.test(name)) return;
+            if (name == this.name || typeof this.subpage[name] == "undefined") {
+                return this.$message.error("页面模板设置错误");
+            }
+            const data = this.subpage[name]["component"];
+            const dataList = api2VmToolItem(toolList, data);
+            dataList.forEach((toolItemData) => {
+                if (!toolItemData.componentPack) {
+                    return console.warn('模板存在一条异常数据，请检查：', dataList, toolItemData);
+                }
+                this.editTemplateComponentList.push(generateEditorItem(toolItemData));
             });
         },
 
@@ -487,14 +505,6 @@ export default {
                     });
                 });
             });
-        },
-
-        // 计算当前item 位于哪个list
-        getCurrentListByItem(item) {
-            for (const value of this.componentListGroup) {
-                if (value.includes(item)) return value;
-            }
-            return [];
         },
 
         /**
@@ -686,7 +696,7 @@ export default {
             });
         },
         handlePublish() {
-            console.log(this.compConfig, this.pageConfig);
+            console.log("Page:",this.pageConfig, "Component:", this.compConfig);
 
             let name = this.pageConfig["name"];
             if (!/^[\w]{1,10}$/.test(name)) {
@@ -704,6 +714,24 @@ export default {
 
         // Form 动作
         handleItemOperate({ item, command }) {
+
+            let list = [];
+            for (list of this.componentListGroup) {
+                if (list.includes(item)) {
+                    if (list == this.editTemplateComponentList) {
+                        return this.$message.error(`请在模板页面（子页面：${this.pageConfig["template"]}）中操作该组件`);
+                    }
+                    break;
+                } 
+            }
+
+            if (command == 'active') {
+                this.editComp = item;
+                this.showForm = true;
+                this.activeTab = 'compTab';
+                return;
+            }
+
             const strategyMap = {
                 moveUp(target, arrayItem) {
                     return arrayMethods.moveUp(target, arrayItem);
@@ -721,20 +749,10 @@ export default {
                     return arrayMethods.remove(target, arrayItem);
                 }
             };
-
-            if (command == 'active') {
-                this.editComp = item;
-                this.showForm = true;
-                this.activeTab = 'compTab';
-                return;
-            }
-
-            const curStrategy = strategyMap[command];
-            if (curStrategy) {
-                curStrategy.apply(this, [this.getCurrentListByItem(item), item]);
-            } else {
+            if (typeof strategyMap[command] == "undefined") {
                 this.$message.error(`系统错误 - 未知的操作：[${command}]`);
             }
+            strategyMap[command].apply(this, [list, item]);
         },
         handleFormChange() {
             
@@ -759,6 +777,7 @@ export default {
         },
         handlePageSubmit() {
             console.info("Page config:", this.pageConfig);
+            this.initEditorTemplate(this.pageConfig["template"]);
         },
 
         handleCommand(what) {
@@ -776,7 +795,7 @@ export default {
                     this.$alert("如需删除主页面，请在左上角菜单“我的页面”列表中操作", "每个页面必须保留一个子页面");
                     return;
                 }
-                this.$http.post("/set?id=" + this.id + "&name=" + this.name).then((result) => {
+                this.$http.post("/set?id=" + this.id + "&name=" + this.name).then(() => {
                     this.$forward("edit", this.id);
                 });
                 return;

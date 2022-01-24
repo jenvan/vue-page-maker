@@ -680,6 +680,8 @@ export default {
                             instance.close();
                             let {page, component} = JSON.parse(code);
                             this.pageConfig = page;
+                            this.pageConfig.name = "";
+                            this.pageConfig.title =  this.pageConfig.title + " - 导入页面";
                             this.compConfig = component;
                             this.$message.success('导入成功');
                         } catch (e) {

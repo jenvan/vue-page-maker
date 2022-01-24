@@ -34,7 +34,7 @@ Vue.prototype.$host = process.env.NODE_ENV === "production" ? "//api.fuchijihua.
 Vue.prototype.$http = http;
 http.defaults.baseURL = Vue.prototype.$host + "/maker";
 
-Vue.prototype.$forward = function(action, id, name) {
+Vue.prototype.$forward = function(action, id, name, tag) {
     let query = router.currentRoute.query;
     let path = action;
     if (typeof id != "undefined") {
@@ -43,18 +43,24 @@ Vue.prototype.$forward = function(action, id, name) {
     if (typeof name != "undefined"){
         path += (path.indexOf("?") > -1 ? "&" : "?") + (name.length > 0 ? "name=" + name : (query["name"] ? "name=" + query["name"] : ""));
     }
+    if (typeof tag != "undefined"){
+        path += (path.indexOf("?") > -1 ? "&" : "?") + "tag=" + tag;
+    }
+    document.querySelector('#device').scrollTo(0, 0);
     console.log("-=> forward:", path);
     return router.push(path);
 }
-Vue.prototype.$redirect = function(link) {
-    if (typeof link != "string" || link.length == 0 || document.querySelector(".editMode") != null)
+Vue.prototype.$redirect = function(url) {
+    if (typeof url != "string" || url.length == 0 || document.querySelector(".editMode") != null)
         return ;
-    console.log("-=> redirect:", link);
-    if (link.substring(0, 4) == "http")
-        return window.open(link, "_blank");
-    if (/^[\w]{20,}$/.test(link))
-        return this.$forward("", link);
-    if (/^[\w]{1,10}$/.test(link))
-        return this.$forward("", "", link);
-    return router.push(link);
+    console.log("-=> redirect:", url);
+    if (url.substring(0, 4) == "http")
+        return window.open(url, "_blank");
+
+    const [path, tag] = url.split("~");
+    if (/^[\w]{20,}$/.test(path))
+        return this.$forward("", path, "", tag);
+    if (/^[\w]{1,10}$/.test(path))
+        return this.$forward("", "", path, tag);
+    return router.push(path);
 };

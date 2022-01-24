@@ -18,5 +18,10 @@ export default {
             ...makeStyleItem(),
             ...{properties: {padding: {default: '20px'}}},
         },
+        tag: {
+            title: "段落标签",
+            type: "string",
+            default: ""
+        },
     }
 };

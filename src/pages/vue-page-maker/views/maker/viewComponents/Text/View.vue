@@ -1,5 +1,5 @@
 <template>
-    <div :class="{[$style.box] : true, animate : animate.length > 0}" :style="style">
+    <div :id="id" :class="{[$style.box] : true, animate : animate.length > 0}" :style="style">
         <TextView :data="formData.title" :animate="animate"></TextView>
     </div>
 </template>
@@ -12,6 +12,15 @@ export default {
             default: () => ({})
         }
     },
+    data() {
+        return {
+            id: "text_" + Math.random().toString(36).substr(3),
+        }
+    },
+    mounted() {
+        this.scroll();
+        window.addEventListener("resize", this.scroll, true);
+    },
     computed: {
         style() {
             const {title, animate, style, ...obj} = this.formData;
@@ -23,6 +32,15 @@ export default {
                 v.length > 0 && arr.push(v);
                 return arr;
             }, ["animate__animated"]).join(" ");
+        },
+    },
+    methods: {
+        scroll() {
+            setTimeout(() => {
+                if (this.$router.currentRoute.query["tag"] && this.$router.currentRoute.query["tag"] == this.formData.tag) {
+                    document.querySelector('#device').scrollTo(0, document.querySelector("#" + this.id).getBoundingClientRect().top - 50);
+                }
+            }, 300);
         },
     }
 };

@@ -84,7 +84,7 @@ export default {
             let device = document.getElementById("device");
             let m = device.scrollTop || 0;
 
-            if (m > 0){
+            if (m > obj.clientHeight){
                 obj.parentElement.id != "page" && document.getElementById("page").appendChild(obj);
                 obj.style.zoom = this.zoom;
                 obj.style.top = device.getBoundingClientRect().top / this.zoom + "px";

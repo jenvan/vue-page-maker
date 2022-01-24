@@ -181,9 +181,10 @@ export default {
     flex-flow: row wrap;
     justify-content: flex-end;
     align-items: center;
-    width: 60%;
+    width: 80%;
     max-width: 800px;
     height: 100%;
+    overflow: none;
 }
 .menu {
     display: none;

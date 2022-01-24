@@ -64,7 +64,10 @@ export default {
             },{
                 value: '500%'
             }],
-            textAlignOptions: [ {
+            textAlignOptions: [{
+                label: '两端',
+                value: 'justify'
+            },{
                 label: '居左',
                 value: 'left'
             },{

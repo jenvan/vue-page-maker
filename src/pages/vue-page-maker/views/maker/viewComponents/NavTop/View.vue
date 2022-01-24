@@ -89,8 +89,6 @@ export default {
                 obj.style.zoom = this.zoom;
                 obj.style.top = device.getBoundingClientRect().top / this.zoom + "px";
                 obj.style.left = device.getBoundingClientRect().left / this.zoom + "px";
-                obj.style.left = "auto";
-                obj.style.right = "auto";
             }
             else {
                 document.getElementById("nav-top-wrap").appendChild(obj);
@@ -101,8 +99,6 @@ export default {
             obj.style.width = device.clientWidth + "px";
             obj.querySelector(".wrap").style.width = device.querySelector(".content").clientWidth + "px";
 
-            this.inMobile = device.clientWidth < 1024;
-
             if (this.formData.bgcolor) {
                 this.bgColor = this.formData.bgcolor;
                 this.fgColor = this.formData.fgcolor;
@@ -112,6 +108,7 @@ export default {
                 this.fgColor = m > 50 ? "#000" : this.formData.fgcolor;
             }
 
+            this.inMobile = device.clientWidth < 1024;
             this.handleMenu(!this.inMobile);
 
             //document.getElementById("nav-top").style.opacity = 1;

@@ -1,13 +1,13 @@
 <template>
     <div :class="$style.box">
         <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
-        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :height="formData.height / 16 + 'em'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
+        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :style="{left: left, width: width}" :height="formData.height / 16 + 'em'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
             <el-carousel-item v-for="(item,index) in formData.list" :key="index" :class="$style.item" :label="getLabel(item.label)">
                 <div v-show="showText && !formData.isCard" :class="{[$style.summary]: true}">
                     <div class="title">{{item.label}}</div>
                     <TextView :data="text"></TextView>
                 </div>
-                <ImageView :class="$style.image" :data="item.image" :fit="formData.isCard ? 'contain' : 'fill'" :lazy="false"></ImageView>
+                <ImageView :data="item.image" :style="{width: formData.isFull ? '100%' : 'auto'}" :fit="formData.isCard ? 'contain' : 'fill'" :lazy="false"></ImageView>
             </el-carousel-item>
         </el-carousel>
         <TextView v-show="showText && formData.isCard" :class="[$style.text]" :data="text"></TextView>
@@ -28,6 +28,14 @@ export default {
         };
     },
     computed: {
+        width() {
+            if (!this.formData.isFull) return "100%";
+            return document.querySelector("#device").clientWidth + "px";
+        },
+        left() {
+            if (!this.formData.isFull) return 0;
+            return -1 * (document.querySelector("#device").clientWidth - document.querySelector(".content").clientWidth) /2 + "px";
+        },
         showText() {
             return this.text && this.text.text && this.text.text.length > 0;
         },
@@ -60,10 +68,11 @@ export default {
     display: block;
 }
 .carousel {
-    width: 100%;
+    position: relative;
     text-align: center;
     clear: both;
     overflow: hidden;
+    height: 100%;
     &.card {
         display: flex;
         flex-flow: column-reverse nowrap;

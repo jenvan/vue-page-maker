@@ -20,6 +20,11 @@ export default {
             type: "boolean",
             default: false,
         },
+        isFull: {
+            title: "横向铺满",
+            type: "boolean",
+            default: false,
+        },
         height: {
             title: "图片高度",
             type: "number",

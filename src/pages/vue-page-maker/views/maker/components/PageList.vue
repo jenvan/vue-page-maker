@@ -37,7 +37,7 @@
           @click="$emit('onForward', 'view', scope.row.id)"
           type="text"
           size="small">
-          预览
+          查看
         </el-button>
         <el-button
           @click="$emit('onForward', 'edit', scope.row.id)"

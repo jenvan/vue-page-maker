@@ -401,8 +401,14 @@ export default {
         loadEditorData(action = "", id = "") {
 
             if (this.action == "" && this.id == "") {
-                action = /(127|192|siteimg)/.test(location.host) ? "edit" : "view";
                 id = "7a3cn10yozlk46gjqb9m532";
+                if (/(127|192|siteimg)/.test(location.host)){
+                    action = /(127)/.test(location.host) ? "edit" : "view";
+                    return this.$forward(action, id);
+                }
+                if (location.host == "localhost") {
+                    id = "7a3cn10yozlk46gjqb9m532";
+                }
             }
 
             if (id && id.length > 16){
@@ -608,6 +614,7 @@ export default {
             this.isPreview = isEnter;
             this.scale = 100;
             document.querySelector('#device').scrollTo(0, 0);
+            if (!isEnter && this.action != "edit") this.$forward("edit", this.id, this.name);
         },
         handleMenu(command) {
             if (command == "new") {
@@ -718,7 +725,7 @@ export default {
             let list = [];
             for (list of this.componentListGroup) {
                 if (list.includes(item)) {
-                    if (list == this.editTemplateComponentList) {
+                    if (this.action == "edit" && list == this.editTemplateComponentList) {
                         return this.$message.error(`请在模板页面（子页面：${this.pageConfig["template"]}）中操作该组件`);
                     }
                     break;

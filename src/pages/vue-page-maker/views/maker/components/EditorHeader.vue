@@ -1,5 +1,5 @@
 <template>
-    <BaseHeader @onMenuNew="$emit('onMenu', 'new')" @onMenuPage="$emit('onMenu', 'page')" @onMenuMedia="$emit('onMenu', 'media')">
+    <BaseHeader @onMenuAuth="$emit('onMenu', 'auth')" @onMenuNew="$emit('onMenu', 'new')" @onMenuPage="$emit('onMenu', 'page')" @onMenuMedia="$emit('onMenu', 'media')">
         <span class="hiddenInMobile">
             <el-switch
                 v-model="device"

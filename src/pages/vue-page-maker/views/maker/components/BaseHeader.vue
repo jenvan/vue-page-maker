@@ -9,12 +9,13 @@
                     Vue Page Maker
                 </a>
             </h1>
-            <el-button type="danger" v-if="!logined" @click="handleCommand('Page')" plain>扫码登录</el-button>
+            <el-button type="danger" v-if="!logined" @click="handleCommand('Auth')" plain>扫码登录</el-button>
             <el-dropdown split-button v-else @click="handleCommand('New')" @command="handleCommand">
                 新建页面
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="Page">我的页面</el-dropdown-item>
                     <el-dropdown-item command="Media">我的素材</el-dropdown-item>
+                    <el-dropdown-item command="Auth">退出 / 重新登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
 

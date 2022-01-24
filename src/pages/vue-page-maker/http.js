@@ -5,7 +5,7 @@ import {Loading, Message, MessageBox} from 'element-ui'
 
 let dlg = null;
 
-function auth(code) {
+axios.auth = function auth(code) {
   let url = axios.defaults.baseURL + "/auth?code=" + Math.random().toString(36).substr(3,4);
   let times = 0;
   let timer = setInterval(() => {

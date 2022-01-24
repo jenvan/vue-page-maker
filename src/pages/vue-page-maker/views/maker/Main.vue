@@ -259,11 +259,12 @@ export default {
 
             toolList,
 
+            editComp: {},
             editComponentList: [],
             editHeaderComponentList: [],
             editFooterComponentList: [],
-            editTemplateComponentList: [],
-            editComp: {},
+            templateComponentHeader: [],
+            templateComponentFooter: [],
 
             pageSchema,
             pageConfigDefault: null, // 原始值
@@ -347,7 +348,7 @@ export default {
 
         // 头部、中间、底部各个list集合
         componentListGroup() {
-            return [this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList, this.editTemplateComponentList];
+            return [this.templateComponentHeader, this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList, this.templateComponentFooter];
         },
 
         // 真实使用的组件 - 包含顶部、底部、不可拖动的模块平铺
@@ -428,7 +429,6 @@ export default {
 
                     if (typeof this.subpage[this.name] == "undefined") {
                         if (typeof this.subpage["index"] != "undefined") name = "index";
-                        if (typeof this.subpage["config"] != "undefined") name = "config";
                         console.error("!!! 指定子页面 " + this.name + " 不存在，跳转到默认页面 " + name + " >>>");
                         return this.$forward(this.action, this.id, name);
                     }
@@ -477,14 +477,13 @@ export default {
                 const editorData = generateEditorItem(toolItemData);
                 // 模拟拖入组件插入数据
                 this.editComponentList.push(editorData);
-                if (editorData.additional) {
-                    // 新加的元素处理特殊配置信息
-                    this.additionalStrategy(editorData.additional, editorData);
-                }
+                // 新加的元素处理特殊配置信息
+                editorData.additional && this.additionalStrategy(editorData);
             });
         },
         initEditorTemplate(name){
-            this.editTemplateComponentList = [];
+            this.templateComponentHeader = [];
+            this.templateComponentFooter = [];
             if (typeof name != "string" || !/^\w+$/.test(name)) return;
             if (name == this.name || typeof this.subpage[name] == "undefined") {
                 return this.$message.error("页面模板设置错误");
@@ -495,7 +494,15 @@ export default {
                 if (!toolItemData.componentPack) {
                     return console.warn('模板存在一条异常数据，请检查：', dataList, toolItemData);
                 }
-                this.editTemplateComponentList.push(generateEditorItem(toolItemData));
+                const editorData = generateEditorItem(toolItemData);
+                if (editorData.additional && editorData.additional.topDisplay){
+                    editorData.$$slot = 'header';
+                    this.templateComponentHeader.push(editorData);
+                }
+                else{
+                    editorData.$$slot = 'footer';
+                    this.templateComponentFooter.push(editorData);
+                }
             });
         },
 
@@ -521,18 +528,15 @@ export default {
         moveToBothEnds(element, position) {
             const curIndex = this.editComponentList.indexOf(element);
             if (curIndex >= 0) {
-                // 移除放入到不同的list
-                (position === 0 ? this.editHeaderComponentList : this.editFooterComponentList)
-                    .push(this.editComponentList.splice(curIndex, 1)[0]);
+                (position === 0 ? this.editHeaderComponentList : this.editFooterComponentList).push(this.editComponentList.splice(curIndex, 1)[0]);
             }
         },
 
         /**
          * 需要置顶或置底的需要移入另一个数组 - 同数组元素拖到存在置顶或置底元素会导致异常
-         * @param additional
          * @param element
          */
-        additionalStrategy(additional, element) {
+        additionalStrategy(element) {
             const Strategy = {
                 topDisplay() {
                     element.$$slot = 'header';
@@ -544,7 +548,7 @@ export default {
                 }
             };
 
-            Object.entries(additional).forEach(([key, value]) => {
+            Object.entries(element.additional).forEach(([key, value]) => {
                 if (Strategy[key]) {
                     Strategy[key].apply(this, [].concat(value));
                 }
@@ -617,6 +621,9 @@ export default {
             if (!isEnter && this.action != "edit") this.$forward("edit", this.id, this.name);
         },
         handleMenu(command) {
+            if (command == "auth") {
+                this.$http.auth(999);
+            }
             if (command == "new") {
                 this.$forward('new');
             }
@@ -727,8 +734,8 @@ export default {
             let list = [];
             for (list of this.componentListGroup) {
                 if (list.includes(item)) {
-                    if (this.action == "edit" && list == this.editTemplateComponentList) {
-                        return this.$message.error(`请在模板页面（子页面：${this.pageConfig["template"]}）中操作该组件`);
+                    if (this.action == "edit" && (list == this.templateComponentHeader || list == this.templateComponentFooter)) {
+                        return this.$message.error(`请在模板页面 ${this.pageConfig["template"]} 中操作该组件`);
                     }
                     break;
                 } 
@@ -818,7 +825,7 @@ export default {
         handleDragChange(evt) {
             if (evt.added && evt.added.element.additional) {
                 // 新加的元素处理特殊配置信息
-                this.additionalStrategy(evt.added.element.additional, evt.added.element);
+                this.additionalStrategy(evt.added.element);
             }
         }
     }

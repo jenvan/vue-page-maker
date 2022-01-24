@@ -167,8 +167,10 @@ export default {
     }
 }
 .logo {
+    position: relative;
+    z-index: 0;
     float: left;
-    max-height: 80%;
+    max-height: 90%;
     :global {
         .el-image__inner {
             width: auto;
@@ -181,8 +183,7 @@ export default {
     flex-flow: row wrap;
     justify-content: flex-end;
     align-items: center;
-    width: 80%;
-    max-width: 800px;
+    width: 100%;
     height: 100%;
     overflow: none;
 }

@@ -46,7 +46,7 @@ Vue.prototype.$forward = function(action, id, name, tag) {
     if (typeof tag != "undefined"){
         path += (path.indexOf("?") > -1 ? "&" : "?") + "tag=" + tag;
     }
-    document.querySelector('#device').scrollTo(0, 0);
+    document.querySelector('#device') && document.querySelector('#device').scrollTo(0, 0);
     console.log("-=> forward:", path);
     return router.push(path);
 }

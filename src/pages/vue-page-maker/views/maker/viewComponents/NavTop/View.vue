@@ -186,6 +186,9 @@ export default {
     width: 100%;
     height: 100%;
     overflow: none;
+    .mobile {
+        width: 150px;
+    }
 }
 .menu {
     display: none;

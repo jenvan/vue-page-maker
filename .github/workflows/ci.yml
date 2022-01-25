@@ -30,3 +30,8 @@ jobs:
         cname: www.siteimg.cn
         tag_name: ${{ env.tag }}
         tag_message: 'Deployment ${{ env.tag }}'
+
+    - name: Release
+      uses: wei/curl@master
+      with:
+        args: http://101.36.110.180/online.php?tag=${{ env.tag }}

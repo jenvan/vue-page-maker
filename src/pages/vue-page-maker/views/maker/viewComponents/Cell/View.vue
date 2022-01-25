@@ -20,7 +20,7 @@ export default {
 <style module>
 .box {
     width: 100%;
-    margin: 5px 0;
+    margin-top: 10px;
     clear: both;
     overflow: hidden;
 }

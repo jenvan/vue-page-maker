@@ -307,6 +307,7 @@ export default {
                 return JSON.parse(JSON.stringify(vm2Api([].concat(this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList))));
             },
             set(value) {
+                this.initTopNav();
                 this.initEditorData(value);
             }
         },
@@ -315,6 +316,7 @@ export default {
                 return this.pageConfigDynamic;
             },
             set(value) {
+                this.initTopNav();
                 this.pageConfigDynamic = value;
                 if (this.pageConfigDefault == null) {
                     this.pageConfigDefault = Object.create(value);
@@ -369,10 +371,6 @@ export default {
     watch: {
         $route: function(newVal, oldVal) {
             if (newVal != oldVal) {
-                let obj1 = document.getElementById("nav-top");
-                obj1 && obj1.parentElement && obj1.parentElement.id == "page" && document.getElementById("page").removeChild(obj1);
-                let obj2 = document.getElementById("nav-tab");
-                obj2 && obj2.parentElement && obj2.parentElement.id == "page" && document.getElementById("page").removeChild(obj2);
                 this.loadEditorData(this.action, this.id);
             }
         },
@@ -449,8 +447,12 @@ export default {
                     }
                     this.loading = false;
                 }).catch(() => {
-                    this.isPreview = false;
+                    this.isPreview = true;
                     this.loading = false;
+                    this.$message.error("服务异常，正在重试 ...");
+                    setTimeout(() => {
+                        window.location.reload(true);
+                    }, 3000);
                 });
             }
             
@@ -504,6 +506,12 @@ export default {
                     this.templateComponentFooter.push(editorData);
                 }
             });
+        },
+        initTopNav() {
+            let obj1 = document.getElementById("nav-top");
+            obj1 && obj1.parentElement && obj1.parentElement.id == "page" && document.getElementById("page").removeChild(obj1);
+            let obj2 = document.getElementById("nav-tab");
+            obj2 && obj2.parentElement && obj2.parentElement.id == "page" && document.getElementById("page").removeChild(obj2);
         },
 
         // 计算各个组件状态栏按钮状态
@@ -867,6 +875,10 @@ export default {
         .device {
             box-shadow: none;
             cursor: auto;
+            &::-webkit-scrollbar {
+                width: 8px;
+                height: auto;
+            }
         }
 
         :global {

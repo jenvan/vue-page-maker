@@ -876,7 +876,7 @@ export default {
             box-shadow: none;
             cursor: auto;
             &::-webkit-scrollbar {
-                width: 8px;
+                width: 0.25em;
                 height: auto;
             }
         }

@@ -26,7 +26,7 @@ export default {
             let s = this.data.size / 16 || 0;
             if (!this.data.direction || /column/.test(this.data.direction))
                 return [{width: "100%", height: s + "em"}, {width: "100%"}];
-            return [{width: s + "em", maxWidth: "50%"}, {width: "calc(100% - " + s + "em)", minWidth: "360px"}];
+            return [{width: s + "em", maxWidth: "50%"}, {width: "calc(100% - " + s + "em)", minWidth: "350px"}];
         },
         style() {
             let {margin, padding, ...other} = this.data.style;

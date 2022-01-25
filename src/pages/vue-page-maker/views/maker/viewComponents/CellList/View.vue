@@ -1,7 +1,7 @@
 <template>
     <div :class="[$style.box]">
         <div :class="[$style.bg]" :style="{backgroundColor: formData.bgcolor}"></div>
-        <TextView :data="formData.title"></TextView>
+        <TextView v-show="formData.title && formData.title.text.length > 0" :data="formData.title"></TextView>
         <div :class="[$style.list]">
             <CellView v-for="(item,index) in formData.list" :key="index" :style="style" :data="item"></CellView>
         </div>
@@ -49,7 +49,6 @@ export default {
     align-items: flex-start;
     width: 100%;
     min-height: 50px;
-    margin: 1em 0;
     clear: both;
 }
 </style>

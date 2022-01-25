@@ -26,7 +26,7 @@ export default {
         }
     },
     data() {
-        return {loaded: false};
+        return {};
     },
     computed: {
         image() {
@@ -47,18 +47,34 @@ export default {
             return this.$style.image + " " + (this.hasLink ? this.$style.link : "") + (this.animateClass.length > 0 ? "animate" : "");
         },
         hasLink() {
-            return this.data.link && this.data.link.length > 0;
+            return typeof this.data.link == "string" && /\S+/.test(this.data.link);
         },
     },
     methods: {
         handleClick() {
-            if (!this.hasLink) return;
-            this.$redirect(this.data.link);
+            if (this.hasLink) 
+                return this.$redirect(this.data.link);
+
+            if (this.$router.currentRoute.params["action"] && this.$router.currentRoute.params["action"] != "")
+                return;
+            
+            this.$alert('<img src=' + this.image+ ' style="max-width:80vw;max-height:80vh;">', '', {
+                dangerouslyUseHTMLString: true,
+                showConfirmButton: false,
+                closeOnClickModal: true,
+                center: true,
+                customClass: "popup_image",
+            });            
         },
     }
 };
 </script>
 
+<style>
+.popup_image {
+    width: auto !important;
+}
+</style>
 <style module>
 .image {
     max-width: 100%;

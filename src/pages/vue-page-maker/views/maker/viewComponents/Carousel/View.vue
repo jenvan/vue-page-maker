@@ -7,7 +7,7 @@
                     <div class="title">{{item.label}}</div>
                     <TextView :data="text"></TextView>
                 </div>
-                <ImageView :data="item.image" :style="{width: formData.isFull ? '100%' : 'auto'}" :fit="formData.isCard ? 'contain' : 'fill'" :lazy="false"></ImageView>
+                <ImageView :data="item.image" :style="{width: formData.isFull ? '100%' : 'auto'}" :fit="formData.isCard ? 'contain' : 'cover'" :lazy="false"></ImageView>
             </el-carousel-item>
         </el-carousel>
         <TextView v-show="showText && formData.isCard" :class="[$style.text]" :data="text"></TextView>

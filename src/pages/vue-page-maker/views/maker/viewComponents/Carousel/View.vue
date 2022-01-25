@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.box">
         <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
-        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :style="{left: left, width: width}" :height="formData.height / 16 + 'em'" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
+        <el-carousel :class="[$style.carousel, formData.isCard ? $style.card : '']" :style="{left: left, width: width}" :height="height" :type="formData.isCard ? 'card' : ''" :interval="5000" indicator-position="outside" trigger="click" @change="change">
             <el-carousel-item v-for="(item,index) in formData.list" :key="index" :class="$style.item" :label="getLabel(item.label)">
                 <div v-show="showText && !formData.isCard" :class="{[$style.summary]: true}">
                     <div class="title">{{item.label}}</div>
@@ -28,13 +28,17 @@ export default {
         };
     },
     computed: {
+        left() {
+            if (!this.formData.isFull) return 0;
+            return -1 * (document.querySelector("#device").clientWidth - document.querySelector(".content").clientWidth) /2 + "px";
+        },
         width() {
             if (!this.formData.isFull) return "100%";
             return document.querySelector("#device").clientWidth + "px";
         },
-        left() {
-            if (!this.formData.isFull) return 0;
-            return -1 * (document.querySelector("#device").clientWidth - document.querySelector(".content").clientWidth) /2 + "px";
+        height() {
+            if (!this.formData.isFull) return this.formData.height / 16 + 'em';
+            return Math.min(document.querySelector("#device").clientWidth, this.formData.height) / 16 + "em";
         },
         showText() {
             return this.text && this.text.text && this.text.text.length > 0;

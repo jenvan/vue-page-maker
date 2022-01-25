@@ -41,6 +41,16 @@ export default {
             minimum: 0,
             maximum: 20
         },
+        width: {
+            title: "图片最小宽度",
+            description: "保证图片在小分辨率屏能自动换行",
+            type: "number",
+            default: 100,
+            "ui:widget": "ElSlider",
+            multipleOf: 1,
+            minimum: 0,
+            maximum: 1000
+        },
         list: {
             title: "图片列表",
             type: "array",

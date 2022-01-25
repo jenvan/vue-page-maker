@@ -207,12 +207,14 @@ export function makeAnimateItem({
 
 export function makeStyleItem({
     fold = false,
+    cell = false,
     title = '样式',
     required = []
 } = { }) {
     return {
         'ui:field': 'StyleField',
         'ui:fold': fold,
+        'ui:cell': cell,
         title: `${title}`,
         type: 'object',
         properties: {

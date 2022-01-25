@@ -49,6 +49,7 @@ export default {
     align-items: flex-start;
     width: 100%;
     min-height: 50px;
+    margin: 1em 0;
     clear: both;
 }
 </style>

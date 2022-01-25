@@ -55,7 +55,7 @@ export default {
     },
     computed: {
         sizeTitle () {
-            return /row/.test(this.direction) ? "图片宽度（px）， 最大占宽 40%" : "图片高度（px）";
+            return /row/.test(this.direction) ? "图片宽度（px）， 最大占宽 50%" : "图片高度（px）";
         },
         imageSchema() {
             let schema = makeImageItem({title: ""});
@@ -69,7 +69,7 @@ export default {
             return makeAnimateItem({title:"图片动效", fold: true});
         },
         styleSchema() {
-            return makeStyleItem({title:"全局样式", fold: true});
+            return makeStyleItem({title:"全局样式", fold: true, cell: true});
         },
         ...importComputedFn(['image', 'text1', 'text2', 'text3', 'link', 'direction', 'size', 'animate', 'style']),
     },

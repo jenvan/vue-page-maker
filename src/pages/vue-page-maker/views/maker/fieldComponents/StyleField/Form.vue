@@ -25,25 +25,14 @@
                     <el-col :span="4" :class="$style.label">边距</el-col>
                     <el-col :span="10" :class="$style.field">
                         <el-input v-model="margin">
-                            <template slot="append">&nbsp;&nbsp;外&nbsp;</template>
+                            <template slot="prepend">&nbsp;{{getProp('cell') ? "图片" : "外"}}&nbsp;</template>
                         </el-input>
                     </el-col>
-                    <el-col :span="10" :class="$style.field">
+                    <el-col :span="9" :class="$style.field">
                         <el-input v-model="padding">
-                            <template slot="prepend">|&nbsp;内&nbsp;&nbsp;</template>
+                            <template slot="prepend">&nbsp;{{getProp('cell') ? "文字" : "内"}}&nbsp;</template>
                         </el-input>
                     </el-col>
-                    
-                    <!-- 
-                    <el-col :span="4" :class="$style.label">位置</el-col>
-                    <el-col :span="20" :class="$style.field">
-                        <el-radio-group v-model="textAlign">
-                            <el-radio label="left">靠左</el-radio>
-                            <el-radio label="center">居中</el-radio>
-                            <el-radio label="right">靠右</el-radio>
-                        </el-radio-group>
-                    </el-col> 
-                    -->
 
                 </el-row>
 
@@ -121,7 +110,7 @@ export default {
     width: 100%;
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     :global {
         .el-input-group__prepend {

@@ -2,7 +2,7 @@
     <div :class="$style.box">
         <div :class="$style.bg" :style="{backgroundColor: formData.bgcolor}"></div>
         <TextView :data="formData.title"></TextView>
-        <CellView :data="formData.cell"></CellView>    
+        <CellView :data="formData.cell"></CellView>
     </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
 <style module>
 .box {
     width: 100%;
+    margin: 5px 0;
     clear: both;
     overflow: hidden;
 }

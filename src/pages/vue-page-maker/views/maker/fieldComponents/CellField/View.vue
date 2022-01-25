@@ -1,9 +1,9 @@
 <template>
-    <div :class="$style.row" :style="{flexDirection: data.direction, ...style[1]}">
-        <div v-if="hasImage" :class="$style.item" :style="{...size[0]}">
+    <div :class="$style.row" :style="{flexDirection: data.direction, ...style[2]}">
+        <div v-if="hasImage" :class="$style.item" :style="{margin: '0 auto', padding: style[0], ...size[0]}">
             <ImageView :data="data.image" :animate="data.animate"></ImageView>
         </div>
-        <div v-if="hasText" :class="{[$style.item]: true, [$style.link]: hasLink}" :style="{padding: style[0], ...size[1]}" @click="handleClick">
+        <div v-if="hasText" :class="{[$style.item]: true, [$style.link]: hasLink}" :style="{padding: style[1], ...size[1]}" @click="handleClick">
             <TextView :data="data.text1"></TextView>
             <TextView :data="data.text2"></TextView>
             <TextView :data="data.text3"></TextView>
@@ -26,11 +26,11 @@ export default {
             let s = this.data.size / 16 || 0;
             if (!this.data.direction || /column/.test(this.data.direction))
                 return [{width: "100%", height: s + "em"}, {width: "100%"}];
-            return [{width: s + "em", maxWidth: "40%"}, {width: "calc(100% - " + s + "em)", minWidth: "60%"}];
+            return [{width: s + "em", maxWidth: "50%"}, {width: "calc(100% - " + s + "em)", minWidth: "360px"}];
         },
         style() {
-            let {padding, ...other} = this.data.style;
-            return [padding, other];
+            let {margin, padding, ...other} = this.data.style;
+            return [margin, padding, other];
         },
         hasImage() {
             return this.data.image && this.data.image.image && this.data.image.image.length > 0;
@@ -59,9 +59,8 @@ export default {
     max-width: 100%;
     min-height: 30px;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
-    margin: 5px 0;
 }
 .item {
     display: flex;

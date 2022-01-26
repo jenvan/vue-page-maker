@@ -18,6 +18,7 @@ jobs:
         TAG=${DT:1}
         echo "tag=${TAG}" >> $GITHUB_ENV
         yarn && yarn build
+        export base=http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@${TAG}/release/ && export dist=./dist/release && yarn && yarn build
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
@@ -30,8 +31,3 @@ jobs:
         cname: www.siteimg.cn
         tag_name: ${{ env.tag }}
         tag_message: 'Deployment ${{ env.tag }}'
-
-    - name: Release
-      uses: wei/curl@master
-      with:
-        args: http://101.36.110.180/online.php?tag=${{ env.tag }}

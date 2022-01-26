@@ -30,17 +30,14 @@ log({
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// config var
-const outputDir = path.resolve(__dirname, './dist');
-
 console.log(entries, openPage);
 
 module.exports = {
-    // cdn
-    publicPath: isProduction ? '/' : '/',
-
     // 资源目录
-    outputDir,
+    publicPath: process.env.base || "./",
+
+    // 发布目录
+    outputDir: path.resolve(__dirname, (process.env.dist || './dist')),
 
     assetsDir: 'static',
 

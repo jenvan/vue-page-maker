@@ -35,7 +35,7 @@ export default {
             default: 100,
             "ui:widget": "ElSlider",
             multipleOf: 1,
-            minimum: 100,
+            minimum: 10,
             maximum: 1000
         },
         height: {
@@ -44,7 +44,7 @@ export default {
             default: 160,
             "ui:widget": "ElSlider",
             multipleOf: 1,
-            minimum: 100,
+            minimum: 10,
             maximum: 1000
         },
         gutter: {

@@ -405,9 +405,6 @@ export default {
                     action = /(127)/.test(location.host) ? "edit" : "view";
                     return this.$forward(action, id);
                 }
-                if (location.host == "localhost") {
-                    id = "7a3cn10yozlk46gjqb9m532";
-                }
                 else if (typeof window.__site_id__ == "string") {
                     id = window.__site_id__;
                 }

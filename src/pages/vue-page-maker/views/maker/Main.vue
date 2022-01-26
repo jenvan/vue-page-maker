@@ -408,6 +408,9 @@ export default {
                 if (location.host == "localhost") {
                     id = "7a3cn10yozlk46gjqb9m532";
                 }
+                else if (typeof window.__site_id__ == "string") {
+                    id = window.__site_id__;
+                }
             }
 
             if (id && id.length > 16){

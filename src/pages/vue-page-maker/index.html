@@ -15,19 +15,20 @@
 </style>
 <script type="text/javascript">
 (function() {
+    document.write('<scr' + 'ipt type="text/javascript" src="/maker/' + location.host.replace(/^www\./i, "") + '.js"></scr' + 'ipt>');
     if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
-    handleFontSize();
+        handleFontSize();
     }
     if (document.addEventListener) {
-    document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+        document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
     } else if (document.attachEvent) {
-    document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+        document.attachEvent("WeixinJSBridgeReady", handleFontSize);
     }
     function handleFontSize() {
-    WeixinJSBridge.invoke('setFontSizeCallback', {'fontSize' : 0});
-    WeixinJSBridge.on('menu:setfont', function() {
         WeixinJSBridge.invoke('setFontSizeCallback', {'fontSize' : 0});
-    });
+        WeixinJSBridge.on('menu:setfont', function() {
+            WeixinJSBridge.invoke('setFontSizeCallback', {'fontSize' : 0});
+        });
     }
 })();
 </script>

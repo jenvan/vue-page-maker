@@ -1,8 +1,8 @@
 {
-  "index.css": "/static/css/index.17846987.css",
-  "index.js": "/static/js/index.01801614.js",
-  "user-runtime.js": "/static/js/user-runtime.6042a29c.js",
-  "user-vendors-polyfill.css": "/static/css/user-vendors-polyfill.c58c96fc.css",
-  "user-vendors-polyfill.js": "/static/js/user-vendors-polyfill.46fa3d25.js",
-  "static/fonts/index.css": "/static/fonts/element-icons.732389de.ttf"
+  "index.css": "static/css/index.17846987.css",
+  "index.js": "static/js/index.01801614.js",
+  "user-runtime.js": "static/js/user-runtime.b538fb0e.js",
+  "user-vendors-polyfill.css": "static/css/user-vendors-polyfill.c58c96fc.css",
+  "user-vendors-polyfill.js": "static/js/user-vendors-polyfill.46fa3d25.js",
+  "static/fonts/index.css": "static/fonts/element-icons.732389de.ttf"
 }

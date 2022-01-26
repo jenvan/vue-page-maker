@@ -1,8 +1,8 @@
 {
-  "index.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/css/index.17846987.css",
-  "index.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/js/index.01801614.js",
-  "user-runtime.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/js/user-runtime.87219b5a.js",
-  "user-vendors-polyfill.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/css/user-vendors-polyfill.c58c96fc.css",
-  "user-vendors-polyfill.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/js/user-vendors-polyfill.46fa3d25.js",
-  "static/fonts/index.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.740/release/static/fonts/element-icons.732389de.ttf"
+  "index.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/css/index.17846987.css",
+  "index.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/js/index.01801614.js",
+  "user-runtime.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/js/user-runtime.602d63a3.js",
+  "user-vendors-polyfill.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/css/user-vendors-polyfill.c58c96fc.css",
+  "user-vendors-polyfill.js": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/js/user-vendors-polyfill.46fa3d25.js",
+  "static/fonts/index.css": "http://cdn.jsdelivr.net/gh/jenvan/vue-page-maker@2.026.912/release/static/fonts/element-icons.732389de.ttf"
 }

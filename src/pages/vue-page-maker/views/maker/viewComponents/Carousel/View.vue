@@ -30,15 +30,13 @@ export default {
     computed: {
         left() {
             if (!this.formData.isFull) return 0;
-            return -1 * (document.querySelector("#device").clientWidth - document.querySelector(".content").clientWidth) /2 + "px";
+            return -1 * (document.querySelector("#device").clientWidth - document.querySelector("#device .content").clientWidth) /2 + "px";
         },
         width() {
-            if (!this.formData.isFull) return "100%";
-            return document.querySelector("#device").clientWidth + "px";
+            return document.querySelector(this.formData.isFull ? "#device" : "#device .content").clientWidth + "px";
         },
         height() {
-            if (!this.formData.isFull) return this.formData.height / 16 + 'em';
-            return Math.min(document.querySelector("#device").clientWidth, this.formData.height) / 16 + "em";
+            return document.querySelector(this.formData.isFull ? "#device" : "#device .content").clientWidth * this.formData.height / 1000 + "px";
         },
         showText() {
             return this.text && this.text.text && this.text.text.length > 0;

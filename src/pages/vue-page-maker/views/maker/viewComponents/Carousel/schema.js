@@ -26,9 +26,10 @@ export default {
             default: false,
         },
         height: {
-            title: "图片高度",
+            title: "图片高宽比例",
+            description: "图片高度和宽度的千分比（‰）",
             type: "number",
-            default: 200,
+            default: 1,
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 1,

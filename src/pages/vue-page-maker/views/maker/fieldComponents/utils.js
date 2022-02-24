@@ -363,7 +363,11 @@ export function makeGoodsItem({
                 type: 'string',
             },
             price: {
-                name: '价格',
+                name: '售卖价',
+                type: 'number',
+            },
+            price_slash: {
+                name: '划线价',
                 type: 'number',
             },
             extra: {

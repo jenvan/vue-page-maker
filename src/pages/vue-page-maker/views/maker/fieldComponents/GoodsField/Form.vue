@@ -9,8 +9,9 @@
             <VueElementForm v-model="image" :schema="imageSchema" :form-footer="{show: false}"></VueElementForm>
             <el-input v-model="title"  :class="$style.text" prefix-icon="el-icon-goods" clearable placeholder="请输入商品标题" title="商品标题"></el-input>
             <el-input v-model="label" :class="$style.text" prefix-icon="el-icon-star-off" clearable placeholder="请输入商品卖点" title="商品卖点"></el-input>
-            <el-input-number v-model="price" :min="0" :max="99999" title="商品价格"></el-input-number>
-            <VueElementForm v-model="extra" :schema="textSchema" :form-footer="{show: false}"></VueElementForm>
+            <el-input-number class="price" v-model="price"       :min="0" :max="99999" title="商品售卖价"></el-input-number>
+            <el-input-number class="price" v-model="price_slash" :min="0" :max="99999" :style="{float:'right'}" title="商品划线价"></el-input-number>
+            <VueElementForm v-model="extra" :schema="textSchema" :form-footer="{show: false}" title="扩展属性"></VueElementForm>
         </div>
     </el-form-item>
 </template>
@@ -39,7 +40,7 @@ export default {
         textSchema() {
             return makeTextItem({title: "", required: []});
         },
-        ...importComputedFn(['image', 'title', 'label', 'price', 'extra']),
+        ...importComputedFn(['image', 'title', 'label', 'price', 'price_slash', 'extra']),
     },
     methods: {
         ...importMethodsFn(),
@@ -54,6 +55,12 @@ export default {
     background: #FFF;
     border: dotted 1px #999;
     border-radius: 5px;
+    :global {
+        .price.el-input-number {
+            width: 150px !important;
+        }
+
+    }
 }
 .text {
     margin-top: 3px;
@@ -83,29 +90,4 @@ export default {
         }
     }
 }
-.size {
-    width: 60px !important;
-    :global {
-        input {
-            width: 60px !important;
-            padding: 0 5px !important;
-            text-align: left !important;
-        }
-        .el-input-number__increase, .el-input-number__decrease {
-            background: #FFF !important;
-            width: 18px !important;
-            height: 18px !important;
-            border: 0 !important;
-            left: 40px !important;
-            right: auto !important;
-        }
-        .el-input-number__increase {
-            top: 0px !important;
-        }
-        .el-input-number__decrease {
-            bottom: 4px !important;
-        }
-    }
-}
-
 </style>

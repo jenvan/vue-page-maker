@@ -9,7 +9,10 @@
                 <div class="label">{{data.label}}</div>
             </div>
             <div class="property">
-                <div class="price"><span class="symbol">￥</span>{{data.price}}</div>
+                <div class="price">
+                    <span class="symbol">￥</span>{{data.price}}
+                    <span class="slash" v-show="data.price_slash"><span class="symbol">￥</span>{{data.price_slash}}</span>
+                </div>
                 <TextView :data="data.extra"></TextView>
             </div>
         </div>
@@ -116,6 +119,12 @@ export default {
         .symbol {
             font-size: 0.5em;
             font-weight: 400;
+        }
+        .slash {
+            margin-left: 3px;
+            color: #999;
+            font-weight: 400;
+            text-decoration: line-through;
         }
     }
 }

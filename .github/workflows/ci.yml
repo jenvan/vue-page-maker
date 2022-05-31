@@ -18,26 +18,17 @@ jobs:
         TAG=${DT:1}
         echo "tag=${TAG}" >> $GITHUB_ENV
         yarn && yarn build
-        export base=/maker/release/vue-page-maker-${TAG}/ && export dist=./release && yarn && yarn build
+        export base=/maker/build/vue-page-maker-${TAG}/release/ && export dist=./dist/release && yarn && yarn build
 
-    - name: Preview
+    - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.DEPLOY_KEY }}
         disable_nojekyll: true
         external_repository: jenvan/vue-page-maker
-        publish_branch: preview
+        publish_branch: build
         publish_dir: ./dist
         cname: www.siteimg.cn
-        
-    - name: Release
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        deploy_key: ${{ secrets.DEPLOY_KEY }}
-        disable_nojekyll: true
-        external_repository: jenvan/vue-page-maker
-        publish_branch: release
-        publish_dir: ./release
         tag_name: ${{ env.tag }}
         tag_message: 'Deployment ${{ env.tag }}'
 

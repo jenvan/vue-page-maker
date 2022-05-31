@@ -35,5 +35,5 @@ jobs:
     - name: Notify
       uses: wei/curl@master
       with:
-        args: http://api.fuchijihua.com/dong?title=http%3A//api.qrserver.com/v1/create-qr-code/%3Fsize%3D250x250%26ecc%3DH%26margin%3D10%26data%3Dhttp%3A//101.36.110.180/%3Faction%3Donline%2526tag%3D${{ env.tag }}
+        args: http://api.fuchijihua.com/dong?title=New%20Version%20Released&content=vue-page-maker%20[${{ env.tag }}](http://101.36.110.180/?action=online%26tag=${{ env.tag }})
         

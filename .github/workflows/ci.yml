@@ -1,5 +1,10 @@
-name: Build and Deploy v2
-on: [push]
+name: Build and Deploy v3
+
+on:
+  push:
+    branches:
+      - main
+      
 jobs:
 
   preview-and-release:

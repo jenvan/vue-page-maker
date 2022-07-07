@@ -15,6 +15,7 @@
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="Page">我的页面</el-dropdown-item>
                     <el-dropdown-item command="Media">我的素材</el-dropdown-item>
+                    <el-dropdown-item command="Profile">我的信息</el-dropdown-item>
                     <el-dropdown-item command="Auth">退出 / 重新登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>

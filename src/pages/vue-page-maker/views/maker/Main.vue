@@ -629,7 +629,7 @@ export default {
             if (!isEnter && this.action != "edit") this.$forward("edit", this.id, this.name);
         },
         handleMenu(command) {
-            if (command == "auth") {
+            if (localStorage.getItem("profile") == null || command == "auth") {
                 this.$http.auth(999);
             }
             if (command == "new") {
@@ -680,6 +680,10 @@ export default {
                         }
                     });
                 });
+            }
+            if (command == "profile") {
+                var profile = JSON.parse(localStorage.getItem("profile"));
+                this.$alert("用户编号：" + profile.uid + "<br>" + "档案编号：" + profile.aid, {dangerouslyUseHTMLString: true});
             }
         },
         handleImport() {

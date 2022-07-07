@@ -31,7 +31,7 @@
     <el-table-column
       fixed="right"
       label="操作"
-      width="120">
+      width="180">
       <template slot-scope="scope">
         <el-button
           @click="$emit('onForward', 'view', scope.row.id)"
@@ -51,6 +51,12 @@
           size="small">
           删除
         </el-button>
+        <el-button
+          @click="handleShare(scope.row.id)"
+          type="text"
+          size="small">
+          共享
+        </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -65,5 +71,24 @@ export default {
             default: () => ({})
         }
     },
+
+    data() {
+      return {
+
+      };
+    },
+
+    methods: {
+      handleShare(aid) {
+        this.$prompt('请输入要共享的用户 ID', '', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^\w{8,}$/,
+          inputErrorMessage: '格式不正确'
+        }).then(({value}) => {
+          this.$http.post('share', {aid, uid: value});
+        });
+      },
+    }
 };
 </script>

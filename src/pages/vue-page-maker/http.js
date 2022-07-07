@@ -98,7 +98,7 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(response.data);
   }
 
-  response.data.msg.length > 4 && Message({type: "success", message: response.data.msg});
+  (response.data.msg.length >= 4 && !/^\w+$/.test(response.data.msg)) && Message({type: "success", message: response.data.msg});
   return Promise.resolve(response.data.data);
 
 }, error => {

@@ -640,7 +640,7 @@ export default {
                     const instance = componentWithDialog({
                         VueComponent: PageList,
                         dialogProps: {
-                            title: '页面列表',
+                            title: '我的页面',
                             width: '90vw',
                             top: '5vh',
                         },
@@ -670,7 +670,7 @@ export default {
                     componentWithDialog({
                         VueComponent: MediaList,
                         dialogProps: {
-                            title: '素材列表',
+                            title: '我的素材',
                             width: '90vw',
                             top: '5vh',
                         },
@@ -683,7 +683,7 @@ export default {
             }
             if (command == "profile") {
                 var profile = JSON.parse(localStorage.getItem("profile"));
-                this.$alert("用户编号：" + profile.uid + "<br>" + "档案编号：" + profile.aid, {dangerouslyUseHTMLString: true});
+                this.$alert("用户编号：" + profile.uid + "<br>" + "档案编号：" + profile.aid, "我的信息", {dangerouslyUseHTMLString: true});
             }
         },
         handleImport() {

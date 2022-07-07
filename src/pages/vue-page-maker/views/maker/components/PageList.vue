@@ -80,11 +80,11 @@ export default {
 
     methods: {
       handleShare(aid) {
-        this.$prompt('请输入要共享的用户 ID', '', {
-          confirmButtonText: '确定',
+        this.$prompt('请填入用户编号', '共享页面 ' + aid, {
+          confirmButtonText: '共享',
           cancelButtonText: '取消',
           inputPattern: /^\w{8,}$/,
-          inputErrorMessage: '格式不正确'
+          inputErrorMessage: '用户编号格式不正确'
         }).then(({value}) => {
           this.$http.post('share', {aid, uid: value});
         });

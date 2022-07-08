@@ -40,5 +40,5 @@ jobs:
     - name: Notify
       uses: wei/curl@master
       with:
-        args: http://api.fuchijihua.com/dong?title=New%20Version%20Released&content=vue-page-maker%20[${{ env.tag }}](http://101.36.110.180/?action=online%26tag=${{ env.tag }})
+        args: http://api.fuchijihua.com/dong?title=New%20Version%20Released&content=vue-page-maker%20%5B${{env.tag}}%5D%28http://101.36.110.180/%3Faction=online%26tag=${{env.tag}}%29
         

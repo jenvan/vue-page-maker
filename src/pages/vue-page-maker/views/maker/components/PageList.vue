@@ -20,7 +20,7 @@
     </el-table-column>
     <el-table-column
       prop="title"
-      label="标题">
+      label="主页面标题">
     </el-table-column>
     <el-table-column
       sortable
@@ -80,7 +80,7 @@ export default {
 
     methods: {
       handleShare(aid) {
-        this.$prompt('请填入用户编号', '共享页面 ' + aid, {
+        this.$prompt('将页面 ' + aid +' 共享给下方所填编号的用户', '共享页面 ' + aid, {
           confirmButtonText: '共享',
           cancelButtonText: '取消',
           inputPattern: /^\w{8,}$/,

@@ -14,6 +14,7 @@ export default {
             default: "12,12",
             "ui:widget": "SelectWidget",
             enum: [
+                "24",
                 "12,12",
                 "16,8",
                 "8,16",
@@ -29,6 +30,7 @@ export default {
                 "8,16,8,8,8",
             ],
             enumNames: [
+                "一行 一栏",
                 "一行 两栏（1:1）",
                 "一行 两栏（2:1）",
                 "一行 两栏（1:2）",
@@ -69,7 +71,7 @@ export default {
             items: {
                 ...makeImageItem(),
             },
-            minItems: 2,
+            minItems: 1,
             maxItems: 6,
             uniqueItems: false,
             "ui:options": {

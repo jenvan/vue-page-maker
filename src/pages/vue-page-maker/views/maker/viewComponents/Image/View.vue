@@ -24,6 +24,7 @@ export default {
 <style module>
 .box {
     width: 100%;
+    margin: 0;
     clear: both;
     overflow: hidden;
 }

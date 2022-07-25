@@ -11,7 +11,7 @@ export default {
         layout: {
             title: "布局",
             type: "string",
-            default: "24,12,12",
+            default: "12,12",
             "ui:widget": "SelectWidget",
             enum: [
                 "12,12",
@@ -47,7 +47,7 @@ export default {
         gutter: {
             title: "栏间距",
             type: "number",
-            default: 2,
+            default: 0,
             "ui:widget": "ElSlider",
             multipleOf: 1,
             minimum: 0,
@@ -69,7 +69,7 @@ export default {
             items: {
                 ...makeImageItem(),
             },
-            minItems: 3,
+            minItems: 2,
             maxItems: 6,
             uniqueItems: false,
             "ui:options": {

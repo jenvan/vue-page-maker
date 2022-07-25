@@ -40,7 +40,7 @@ export default {
     align-items: center;
     width: 100%;
     min-height: 100px;
-    margin: 5px 0;
+    margin: 0;
     clear: both;
     overflow: hidden;
 }

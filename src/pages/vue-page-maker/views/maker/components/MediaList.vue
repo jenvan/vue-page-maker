@@ -177,7 +177,7 @@ export default {
       },
       handleUpload(data) {
         if (data.status == "success") {
-          this.url = "http://vue-page-maker.test.upcdn.net" + data.response.url;
+          this.url = "//img.fuchijihua.com" + data.response.url;
           this.handleAdd();
         }
       },
